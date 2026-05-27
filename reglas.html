@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reglamento Oficial - Quiniela Mundial 2026</title>
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-dark: #161925;
+            --primary: #0072ff;
+            --primary-glow: rgba(0, 114, 255, 0.3);
+            --success: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.2);
+            --danger: #ff1744;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #23283d;
+            --warning: #ffb300;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: linear-gradient(rgba(15, 17, 26, 0.92), rgba(15, 17, 26, 0.92)), url('imagen.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e2538, #161925);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+        header h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--primary-glow); }
+        header p { margin: 8px 0 0 0; color: var(--warning); font-weight: bold; font-size: 0.95rem; }
+        
+        .card {
+            background: var(--card-dark);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+        
+        /* Formato de Listas Especiales */
+        ul, ol { padding-left: 20px; margin: 0; }
+        li { margin-bottom: 12px; font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); }
+        li strong { color: var(--text-main); }
+        
+        /* Bloques de Alerta Estrictos */
+        .alert-block {
+            background: rgba(255, 23, 68, 0.08);
+            border-left: 5px solid var(--danger);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-top: 1px solid rgba(255, 23, 68, 0.2);
+            border-right: 1px solid rgba(255, 23, 68, 0.2);
+            border-bottom: 1px solid rgba(255, 23, 68, 0.2);
+        }
+        .alert-block h4 { margin: 0 0 5px 0; color: #ff5252; font-size: 1rem; }
+        .alert-block p { margin: 0; color: var(--text-main); font-size: 0.9rem; }
+
+        .prize-box {
+            background: linear-gradient(135deg, rgba(0, 114, 255, 0.1), rgba(0, 230, 118, 0.05));
+            border-left: 5px solid var(--success);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .prize-tag {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--success);
+            text-shadow: 0 0 10px var(--success-glow);
+            margin: 10px 0;
+        }
+
+        .punto-item {
+            background: #11131f;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .punto-item span { font-weight: bold; color: var(--primary); }
+
+        .btn-back {
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px var(--primary-glow);
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        @media (min-width: 768px) {
+            body { padding: 25px; }
+            header { padding: 30px; }
+            header h1 { font-size: 2.2rem; }
+            .btn-back { width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>📋 REGLAMENTO OFICIAL 2026</h1>
+        <p>LEER ATENTAMENTE — SIN EXCEPCIONES</p>
+    </header>
+
+    <div class="card">
+        <h2>1. Admisión y Registro de Jugadores</h2>
+        <p>Para garantizar el orden y la total transparencia del torneo, el proceso de ingreso es estricto y automatizado:</p>
+        <ol>
+            <li><strong>Formulario Obligatorio:</strong> Es requisito indispensable registrarse introduciendo el nombre completo en el **Formulario de Google oficial**. No se tomarán válidos registros por chat o de palabra.</li>
+            <li><strong>Verificación de Identidad:</strong> El nombre cargado en el formulario debe coincidir exactamente con el perfil que usará el sistema.</li>
+        </ol>
+        
+        <div class="alert-block">
+            <h4>🚨 CONDICIÓN DE PAGO OBLIGATORIA:</h4>
+            <p><strong>Si no se efectúa y valida el pago correspondiente, NO se dará de alta al usuario ni se le otorgará el PIN de acceso.</strong> El sistema de llenado permanecerá completamente bloqueado para dicha persona. Sin excepción, nadie puede registrar marcadores si no saldó su cuota de ingreso.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>2. Distribución del Pozo Económico</h2>
+        <p>Este torneo premia la excelencia y el conocimiento puro de fútbol bajo la modalidad más competitiva del mercado:</p>
+        
+        <div class="prize-box">
+            <p>🏆 <strong>EL GANADOR SE LLEVA TODO</strong> 🏆</p>
+            <div class="prize-tag">70% DEL POZO</div>
+            <p style="margin: 0; color: var(--text-main); font-weight: 500;">Habrá UN SOLO GANADOR ABSOLUTO en toda la competencia.</p>
+        </div>
+        <p>Aquel participante que finalice en el <strong>Puesto #1</strong> del Ranking General Vivo al concluir el último partido del Mundial, se adjudicará de forma directa el <strong>70% de la totalidad de los fondos recaudados</strong>.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">* El 30% restante se destinará según lo establecido por la organización para cubrir costos logísticos, mantenimiento de servidores web de la plataforma.</p>
+    </div>
+
+    <div class="card">
+        <h2>3. Asignación Matemática de Puntos</h2>
+        <p>El motor informático de la plataforma computa los puntos de forma inmediata al finalizar los partidos oficiales según la siguiente matriz acumulativa:</p>
+        
+        <div class="punto-item">
+            🎤 <span>+3 Puntos</span> Acertar Resultado del equipo ganador (Ganador)
+        </div>
+        <div class="punto-item">
+            🎯 <span>+3 Puntos</span> Acertar Marcador Exacto (acertar los goles exactos)
+        </div>
+        <div class="punto-item">
+            🏃‍♂️ <span>+1 Punto</span> Acertar la cantidad exacta de goles de un solo equipo
+        </div>
+
+        <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Ejemplo práctico:</strong> Si pronosticás un 2-1 y el partido real termina 2-1, sumás 6 puntos en total (+3 por ganador y +3 por el pleno exacto). Si el partido termina 2-0, sumás 4 puntos (+3 por acertar ganador y +1 por pegarle a los 2 goles del local).</p>
+    </div>
+
+    <div class="card">
+        <h2>4. Seguridad y Cierre de Fechas</h2>
+        <ul>
+            <li><strong>Cierre General:</strong> El administrador bloqueará el acceso a las fases de forma global antes del pitazo inicial del primer partido de cada ronda.</li>
+            <li><strong>Auto-Bloqueo Seguro:</strong> Al terminar de rellenar tus goles, es obligatorio pulsar el botón <strong>"Enviar y Bloquear"</strong>.</li>
+            <li><strong>Inmutabilidad:</strong> Una vez bloqueados, los marcadores quedan encriptados en la base de datos de Firebase. Ni el jugador ni nadie puede modificarlos bajo ninguna circunstancia, eliminando cualquier sospecha de fraude.</li>
+            <li><strong>Transparencia:</strong> Todos los jugadores disponen de la pestaña <strong>"Espiar"</strong> para revisar en vivo qué ingresó cualquier otro competidor, garantizando transparencia absoluta.</li>
+        </ul>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="index.html" class="btn-back">↩️ Volver al Centro de Control</a>
+    </div>
+
+</div>
+
+</body>
+</html>

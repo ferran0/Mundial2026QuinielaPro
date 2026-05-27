@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODE Mundial 2026 - Live Premium</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-dark: #161925;
+            --primary: #0072ff;
+            --primary-glow: rgba(0, 114, 255, 0.3);
+            --success: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.2);
+            --danger: #ff1744;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #23283d;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: linear-gradient(rgba(15, 17, 26, 0.88), rgba(15, 17, 26, 0.88)), url('imagen.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #1e2538, #161925);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+        header h1 {
+            font-size: 1.6rem;
+            margin: 5px 0;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+        header p {
+            color: var(--text-muted);
+            margin: 5px 0 0 0;
+        }
+        .login-box {
+            background: var(--card-dark);
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: 40px auto;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            border: 1px solid var(--border-color);
+        }
+        .login-box h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1 1 calc(50% - 8px);
+            min-width: 120px;
+            padding: 12px 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-dark);
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+        .panel {
+            background-color: var(--card-dark);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            display: none;
+            margin-bottom: 20px;
+        }
+        .panel.active { display: block; }
+        .panel h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .panel h3 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f111a;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+        button.btn {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+        button.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #11131f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        th { background-color: #1a1e30; color: var(--text-muted); font-weight: 600; }
+        td { color: var(--text-main); }
+        
+        .partido-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            background: #11131f;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary);
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .partido-card:hover {
+            border-color: #2c324d;
+        }
+        .partido-card .equipo-texto {
+            font-size: 1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .partido-card .marcador-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .partido-card input[type="number"], 
+        .partido-card input[type="text"] {
+            width: 65px;
+            text-align: center;
+            padding: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        
+        .fase-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            background: #11131f;
+            padding: 8px;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+        .fase-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            background: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .fase-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+        .eliminar-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+        .badge-success { background-color: var(--success); box-shadow: 0 0 8px var(--success-glow); }
+        .badge-danger { background-color: var(--danger); }
+        
+        .alert-info {
+            background-color: rgba(255, 23, 68, 0.15);
+            color: #ff5252;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 23, 68, 0.3);
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin: 20px 0;
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 25px; }
+            header { padding: 30px; margin-bottom: 25px; }
+            header h1 { font-size: 2.4rem; }
+            .tab-btn { flex: none; padding: 12px 24px; font-size: 1rem; }
+            .panel { padding: 25px; }
+            button.btn { width: auto; }
+            
+            .grid-dos-columnas {
+                display: grid;
+                grid-template-columns: 1fr 1.2fr;
+                gap: 25px;
+            }
+            .grid-ranking {
+                display: grid;
+                grid-template-columns: 1.2fr 0.8fr;
+                gap: 25px;
+            }
+            
+            .partido-card {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                padding: 12px 20px;
+            }
+            .partido-card .equipo-texto {
+                flex: 1;
+            }
+            .partido-card .equipo-texto.derecha { text-align: right; padding-right: 20px; }
+            .partido-card .equipo-texto.izquierda { text-align: left; padding-left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🏆 QUINIELA MUNDIAL 2026 🏆</h1>
+    <p id="txt-bienvenida">Cargando ecosistema digital...</p>
+    <button id="btn-cerrar-sesion" class="eliminar-btn" style="display:none; margin: 15px auto 0 auto;" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
+
+<div id="panel-login" class="login-box">
+    <h3>Ingresar al Sistema</h3>
+    <div class="form-group">
+        <label>Introduce tu PIN Secreto:</label>
+        <input type="password" id="input-pin" placeholder="•••• (Vacío para modo visor)">
+    </div>
+    <button class="btn" onclick="verificarPIN()">Autenticar Entrar</button>
+</div>
+
+<div id="contenido-sistema" style="display: none;">
+    
+    <div class="nav-tabs" id="barra-navegacion">
+        <button class="tab-btn" id="tab-adm-partidos" onclick="switchTab('tab-partidos')">⚙️ Partidos</button>
+        <button class="tab-btn" id="tab-adm-participantes" onclick="switchTab('tab-participantes')">👥 Jugadores</button>
+        <button class="tab-btn" id="tab-usr-predicciones" onclick="switchTab('tab-predicciones')">✍️ Mis Predicciones</button>
+        <button class="tab-btn" id="tab-vis-predicciones" onclick="switchTab('tab-visor-predicciones')">🔍 Espiar</button>
+        <button class="tab-btn active" id="tab-gen-ranking" onclick="switchTab('tab-ranking')">📊 Tabla Ranking</button>
+    </div>
+
+    <div id="tab-partidos" class="panel">
+        <h2>Panel de Administrador</h2>
+        <div class="grid-dos-columnas">
+            <div>
+                <h3>Control de Fases</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>Fase</th><th>Estado</th><th>Acción</th></tr></thead>
+                        <tbody id="tabla-control-fases"></tbody>
+                    </table>
+                </div>
+                <hr>
+                <h3>Agregar Nuevo Partido</h3>
+                <div class="form-group">
+                    <label>Fase de Juego:</label>
+                    <select id="partido-fase">
+                        <option value="16avos">16avos de Final</option>
+                        <option value="8vos">Octavos de Final</option>
+                        <option value="4tos">Cuartos de Final</option>
+                        <option value="semi">Semifinal</option>
+                        <option value="final">Final</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Equipo Local:</label>
+                    <input type="text" id="equipo-local" placeholder="Ej: Argentina">
+                </div>
+                <div class="form-group">
+                    <label>Equipo Visitante:</label>
+                    <input type="text" id="equipo-visitante" placeholder="Ej: Brasil">
+                </div>
+                <button class="btn" onclick="guardarPartido()">Agregar Partido</button>
+            </div>
+            <div>
+                <h3>Lista de Partidos Creados</h3>
+                <div class="fase-selector">
+                    <button class="fase-btn active" onclick="filtrarPartidosConfig('16avos', this)">16avos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosConfig('8vos', this)">8vos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosConfig('4tos', this)">4tos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosConfig('semi', this)">Semi</button>
+                    <button class="fase-btn" onclick="filtrarPartidosConfig('final', this)">Final</button>
+                </div>
+                <div id="lista-partidos-config"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-participantes" class="panel">
+        <h2>Gestión de Participantes</h2>
+        <div class="grid-dos-columnas">
+            <div>
+                <div class="form-group">
+                    <label>Nombre Completo:</label>
+                    <input type="text" id="part-nombre" placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono / Celular:</label>
+                    <input type="text" id="part-correo" placeholder="Ej: 555-1234">
+                </div>
+                <button class="btn" onclick="guardarParticipante()">Registrar Participante</button>
+            </div>
+            <div>
+                <h3>Participantes Registrados</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Nombre</th><th>Teléfono</th><th>PIN</th><th>Acción</th></tr>
+                        </thead>
+                        <tbody id="tabla-participantes"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-predicciones" class="panel">
+        <h2>Cargar Mis Predicciones</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;" id="div-select-usuario-admin">
+                <label>Administrador - Seleccionar Usuario:</label>
+                <select id="select-participante-admin" onchange="cargarFormularioPredicciones()"></select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <label>Selecciona Fase a Llenar:</label>
+                <select id="select-fase-pred" onchange="cargarFormularioPredicciones()">
+                    <option value="16avos">16avos de Final</option>
+                    <option value="8vos">Octavos de Final</option>
+                    <option value="4tos">Cuartos de Final</option>
+                    <option value="semi">Semifinal</option>
+                    <option value="final">Final</option>
+                </select>
+            </div>
+        </div>
+        <hr>
+        <div id="alert-ya-bloqueado" class="alert-info" style="display:none;">
+            🔒 Ya enviaste tus predicciones de esta fase. Se encuentran bloqueadas de forma permanente.
+        </div>
+        <div id="status-fase-bloqueada" style="display:none; color:var(--danger); font-weight:bold; margin:15px 0;">
+            🔒 Esta fase se encuentra CERRADA de manera general por el Administrador.
+        </div>
+        <div id="formulario-predicciones" style="margin-top: 20px;"></div>
+        <button class="btn" id="btn-guardar-preds" style="display:none; margin-top:20px; background-color: var(--success); box-shadow:0 4px 12px var(--success-glow);" onclick="guardarPredicciones()">🔒 Enviar y Bloquear Predicciones</button>
+    </div>
+
+    <div id="tab-visor-predicciones" class="panel">
+        <h2>🔍 Consultar Predicciones</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 150px;">
+                <label>Ver a:</label>
+                <select id="select-visor-usuario" onchange="cargarVistaEspiar()"></select>
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+                <label>Fase:</label>
+                <select id="select-visor-fase" onchange="cargarVistaEspiar()">
+                    <option value="16avos">16avos</option>
+                    <option value="8vos">8vos</option>
+                    <option value="4tos">4tos</option>
+                    <option value="semi">Semi</option>
+                    <option value="final">Final</option>
+                </select>
+            </div>
+        </div>
+        <hr>
+        <div id="formulario-visor-espiar" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="tab-ranking" class="panel active">
+        <h2>Resultados y Posiciones</h2>
+        <div class="grid-ranking">
+            <div>
+                <h3>Resultados Oficiales</h3>
+                <div class="fase-selector">
+                    <button class="fase-btn active" onclick="filtrarPartidosReales('16avos', this)">16avos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosReales('8vos', this)">8vos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosReales('4tos', this)">4tos</button>
+                    <button class="fase-btn" onclick="filtrarPartidosReales('semi', this)">Semi</button>
+                    <button class="fase-btn" onclick="filtrarPartidosReales('final', this)">Final</button>
+                </div>
+                <div id="lista-partidos-reales"></div>
+                <button class="btn" id="btn-guardar-reales" style="background-color: var(--success); box-shadow:0 4px 12px var(--success-glow); margin-top: 15px; display:none;" onclick="guardarResultadosReales()">Guardar Resultados y Calcular Puntos</button>
+            </div>
+            <div>
+                <h3>🏆 Ranking General En Vivo</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>Pos</th><th>Nombre</th><th>Puntos</th></tr>
+                        </thead>
+                        <tbody id="tabla-ranking"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- CONFIGURACIÓN DE FIREBASE ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyB0iGPuWu1ckgjPzY0OINDyaklLxzBVIM",
+      authDomain: "quinielamundial2026-f789d.firebaseapp.com",
+      databaseURL: "https://quinielamundial2026-f789d-default-rtdb.firebaseio.com",
+      projectId: "quinielamundial2026-f789d",
+      storageBucket: "quinielamundial2026-f789d.firebasestorage.app",
+      messagingSenderId: "1091618883750",
+      appId: "1:1091618883750:web:b6eb608aeaeeffc8314c67",
+      measurementId: "G-CDJT0E4EEF"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let partidos = [];
+    let participantes = [];
+    let predicciones = {};
+    let estadosFases = { "16avos": true, "8vos": false, "4tos": false, "semi": false, "final": false };
+    let bloqueosUsuarios = {};
+
+    let rolActual = 'visor';
+    let usuarioLogueado = null;
+    let PIN_ADMIN = "9999"; // Cambia este número por tu PIN secreto de Administrador
+
+    let faseFiltroConfig = '16avos';
+    let faseFiltroReal = '16avos';
+
+    db.ref().on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        partidos = data.partidos || [];
+        participantes = data.participantes || [];
+        predicciones = data.predicciones || {};
+        estadosFases = data.estadosFases || { "16avos": true, "8vos": false, "4tos": false, "semi": false, "final": false };
+        bloqueosUsuarios = data.bloqueosUsuarios || {};
+
+        renderPartidosConfig();
+        renderParticipantes();
+        renderControlFases();
+        renderPartidosReales();
+        renderRanking();
+        cargarSelectoresPredicciones();
+        actualizarSelectorVisor();
+    });
+
+    function verificarPIN() {
+        const pinIngresado = document.getElementById('input-pin').value.trim();
+        
+        if (pinIngresado === PIN_ADMIN) {
+            rolActual = 'admin';
+            document.getElementById('txt-bienvenida').innerText = "👑 MODO ADMINISTRADOR";
+            configurarInterfazPorRol();
+        } else if (pinIngresado === "") {
+            rolActual = 'visor';
+            document.getElementById('txt-bienvenida').innerText = "👀 MODO VISOR GENERAL";
+            configurarInterfazPorRol();
+        } else {
+            const encontrado = participantes.find(p => p.pin === pinIngresado);
+            if (encontrado) {
+                rolActual = 'usuario';
+                usuarioLogueado = encontrado;
+                document.getElementById('txt-bienvenida').innerText = `⚽ ¡Hola, ${encontrado.nombre}!`;
+                configurarInterfazPorRol();
+            } else {
+                alert("PIN incorrecto. Intenta de nuevo.");
+            }
+        }
+    }
+
+    function configurarInterfazPorRol() {
+        document.getElementById('panel-login').style.display = 'none';
+        document.getElementById('contenido-sistema').style.display = 'block';
+        document.getElementById('btn-cerrar-sesion').style.display = 'block';
+
+        document.getElementById('tab-adm-partidos').style.display = (rolActual === 'admin') ? 'block' : 'none';
+        document.getElementById('tab-adm-participantes').style.display = (rolActual === 'admin') ? 'block' : 'none';
+        document.getElementById('tab-usr-predicciones').style.display = (rolActual === 'admin' || rolActual === 'usuario') ? 'block' : 'none';
+        
+        document.getElementById('tab-vis-predicciones').style.display = 'block';
+        document.getElementById('btn-guardar-reales').style.display = (rolActual === 'admin') ? 'block' : 'none';
+        document.getElementById('div-select-usuario-admin').style.display = (rolActual === 'admin') ? 'block' : 'none';
+
+        if (rolActual === 'admin' || rolActual === 'visor') {
+            switchTab('tab-ranking');
+        } else if (rolActual === 'usuario') {
+            switchTab('tab-predicciones');
+        }
+    }
+
+    function cerrarSesion() {
+        rolActual = 'visor';
+        usuarioLogueado = null;
+        document.getElementById('input-pin').value = '';
+        document.getElementById('panel-login').style.display = 'block';
+        document.getElementById('contenido-sistema').style.display = 'none';
+        document.getElementById('btn-cerrar-sesion').style.display = 'none';
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        const btnActivo = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+        if(btnActivo) btnActivo.classList.add('active');
+
+        if(tabId === 'tab-predicciones') { cargarFormularioPredicciones(); }
+        if(tabId === 'tab-visor-predicciones') { cargarVistaEspiar(); }
+    }
+
+    function renderControlFases() {
+        const tbody = document.getElementById('tabla-control-fases');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        Object.keys(estadosFases).forEach(fase => {
+            const act = estadosFases[fase];
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${fase}</b></td>
+                    <td><span class="status-badge ${act ? 'badge-success' : 'badge-danger'}">${act ? 'Abierta' : 'Bloqueada'}</span></td>
+                    <td><button class="btn" style="padding:5px 10px; font-size:12px; width:auto; box-shadow:none;" onclick="cambiarEstadoFase('${fase}', ${!act})">${act ? 'Bloquear' : 'Abrir'}</button></td>
+                </tr>`;
+        });
+    }
+
+    function cambiarEstadoFase(fase, nuevoEstado) {
+        estadosFases[fase] = nuevoEstado;
+        db.ref('estadosFases').set(estadosFases);
+    }
+
+    function guardarPartido() {
+        const fase = document.getElementById('partido-fase').value;
+        const local = document.getElementById('equipo-local').value.trim();
+        const visitante = document.getElementById('equipo-visitante').value.trim();
+        if(!local || !visitante) return alert("Completa los nombres de los equipos.");
+
+        const nuevo = { id: 'P_' + Date.now(), fase, local, visitante, golesLocal: null, golesVisitante: null };
+        partidos.push(nuevo);
+        db.ref('partidos').set(partidos);
+        document.getElementById('equipo-local').value = '';
+        document.getElementById('equipo-visitante').value = '';
+    }
+
+    function renderPartidosConfig() {
+        const contenedor = document.getElementById('lista-partidos-config');
+        if(!contenedor) return;
+        contenedor.innerHTML = '';
+        const filtrados = partidos.filter(p => p.fase === faseFiltroConfig);
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos creados.</p>'; return; }
+        filtrados.forEach(p => {
+            contenedor.innerHTML += `
+                <div class="partido-card" style="flex-direction:row; justify-content:space-between; text-align:left;">
+                    <span><b>${p.local}</b> vs <b>${p.visitante}</b></span>
+                    <button class="eliminar-btn" onclick="eliminarPartido('${p.id}')">❌</button>
+                </div>`;
+        });
+    }
+
+    function filtrarPartidosConfig(fase, btn) {
+        faseFiltroConfig = fase;
+        btn.parentElement.querySelectorAll('.fase-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPartidosConfig();
+    }
+
+    function eliminarPartido(id) {
+        if(confirm("¿Seguro que quieres borrar este partido?")) {
+            partidos = partidos.filter(p => p.id !== id);
+            db.ref('partidos').set(partidos);
+        }
+    }
+
+    function guardarParticipante() {
+        const nombre = document.getElementById('part-nombre').value.trim();
+        const correo = document.getElementById('part-correo').value.trim();
+        if(!nombre || !correo) return alert("Completa todos los campos.");
+        if(participantes.some(p => p.correo === correo)) return alert("Este teléfono/celular ya está registrado.");
+
+        const pinAleatorio = Math.floor(1000 + Math.random() * 9000).toString();
+        participantes.push({ nombre, correo, pin: pinAleatorio });
+        db.ref('participantes').set(participantes);
+        document.getElementById('part-nombre').value = '';
+        document.getElementById('part-correo').value = '';
+    }
+
+    function renderParticipantes() {
+        const tbody = document.getElementById('tabla-participantes');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        participantes.forEach(p => {
+            tbody.innerHTML += `<tr><td>${p.nombre}</td><td>${p.correo}</td><td><strong style="color:var(--success); font-size:16px;">${p.pin}</strong></td><td><button class="eliminar-btn" style="padding:4px 8px; font-size:12px;" onclick="eliminarParticipante('${p.correo}')">🗑️</button></td></tr>`;
+        });
+    }
+
+    function eliminarParticipante(correo) {
+        if(confirm("¿Seguro que quieres eliminar a este participante?")) {
+            participantes = participantes.filter(p => p.correo !== correo);
+            db.ref('participantes').set(participantes);
+            const nodo = correo.replace(/\./g, '_');
+            db.ref('predicciones/' + nodo).remove();
+            db.ref('bloqueosUsuarios/' + nodo).remove();
+        }
+    }
+
+    function cargarSelectoresPredicciones() {
+        const selectAdmin = document.getElementById('select-participante-admin');
+        if(!selectAdmin) return;
+        const elegidoAntes = selectAdmin.value;
+        selectAdmin.innerHTML = '';
+        participantes.forEach(p => { selectAdmin.innerHTML += `<option value="${p.correo}">${p.nombre}</option>`; });
+        if(elegidoAntes) selectAdmin.value = elegidoAntes;
+    }
+
+    function actualizarSelectorVisor() {
+        const selectVisor = document.getElementById('select-visor-usuario');
+        if(!selectVisor) return;
+        const elegidoAntes = selectVisor.value;
+        selectVisor.innerHTML = '';
+        if(participantes.length === 0) {
+            selectVisor.innerHTML = '<option value="">No hay jugadores</option>';
+            return;
+        }
+        participantes.forEach(p => { selectVisor.innerHTML += `<option value="${p.correo}">${p.nombre}</option>`; });
+        if(elegidoAntes) selectVisor.value = elegidoAntes;
+    }
+
+    function cargarFormularioPredicciones() {
+        let correoDestino = (rolActual === 'admin') ? document.getElementById('select-participante-admin').value : usuarioLogueado?.correo;
+        const fase = document.getElementById('select-fase-pred').value;
+        const contenedor = document.getElementById('formulario-predicciones');
+        const btnGuardar = document.getElementById('btn-guardar-preds');
+        const alertGeneralCerrada = document.getElementById('status-fase-bloqueada');
+        const alertUsuarioBloqueado = document.getElementById('alert-ya-bloqueado');
+
+        if(!correoDestino) { contenedor.innerHTML = '<p style="color:var(--text-muted);">Selecciona un participante.</p>'; btnGuardar.style.display = 'none'; return; }
+
+        const nodoUsuario = correoDestino.replace(/\./g, '_');
+        const usuarioEstaBloqueadoEnEstaFase = bloqueosUsuarios[nodoUsuario]?.[fase] || false;
+        const faseAbiertaGeneral = estadosFases[fase];
+
+        const puedeEditar = (rolActual === 'admin') || (rolActual === 'usuario' && faseAbiertaGeneral && !usuarioEstaBloqueadoEnEstaFase);
+
+        alertGeneralCerrada.style.display = (!faseAbiertaGeneral && rolActual === 'usuario') ? 'block' : 'none';
+        alertUsuarioBloqueado.style.display = (usuarioEstaBloqueadoEnEstaFase && rolActual === 'usuario') ? 'block' : 'none';
+        btnGuardar.style.display = puedeEditar ? 'block' : 'none';
+
+        const filtrados = partidos.filter(p => p.fase === fase);
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos configurados.</p>'; btnGuardar.style.display = 'none'; return; }
+
+        contenedor.innerHTML = '';
+        const misPreds = predicciones[nodoUsuario] || {};
+
+        filtrados.forEach(p => {
+            const dataP = misPreds[p.id] || { local: '', visitante: '' };
+            const inputStatus = puedeEditar ? '' : 'disabled';
+
+            contenedor.innerHTML += `
+                <div class="partido-card item-prediccion" data-id="${p.id}">
+                    <span class="equipo-texto derecha"><b>${p.local}</b></span>
+                    <div class="marcador-inputs">
+                        <input type="number" class="pred-l" value="${dataP.local !== undefined ? dataP.local : ''}" min="0" ${inputStatus}> 
+                        <span style="color:var(--text-muted);">vs</span> 
+                        <input type="number" class="pred-v" value="${dataP.visitante !== undefined ? dataP.visitante : ''}" min="0" ${inputStatus}>
+                    </div>
+                    <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
+                </div>`;
+        });
+    }
+
+    function cargarVistaEspiar() {
+        const correoDestino = document.getElementById('select-visor-usuario').value;
+        const fase = document.getElementById('select-visor-fase').value;
+        const contenedor = document.getElementById('formulario-visor-espiar');
+
+        if(!correoDestino) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay jugadores seleccionados.</p>'; return; }
+
+        const filtrados = partidos.filter(p => p.fase === fase);
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos en esta fase.</p>'; return; }
+
+        contenedor.innerHTML = '';
+        const nodoUsuario = correoDestino.replace(/\./g, '_');
+        const susPreds = predicciones[nodoUsuario] || {};
+
+        filtrados.forEach(p => {
+            const dataP = susPreds[p.id] || { local: null, visitante: null };
+            const gl = (dataP.local !== null && dataP.local !== undefined) ? dataP.local : '-';
+            const gv = (dataP.visitante !== null && dataP.visitante !== undefined) ? dataP.visitante : '-';
+
+            contenedor.innerHTML += `
+                <div class="partido-card">
+                    <span class="equipo-texto derecha"><b>${p.local}</b></span>
+                    <div class="marcador-inputs">
+                        <input type="text" value="${gl}" style="background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled> 
+                        <span style="margin:0 5px; color:var(--text-muted);">vs</span> 
+                        <input type="text" value="${gv}" style="background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled>
+                    </div>
+                    <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
+                </div>`;
+        });
+    }
+
+    function guardarPredicciones() {
+        let correoDestino = (rolActual === 'admin') ? document.getElementById('select-participante-admin').value : usuarioLogueado.correo;
+        const fase = document.getElementById('select-fase-pred').value;
+        if(!correoDestino) return;
+
+        if(rolActual === 'usuario') {
+            const confirmacion = confirm("⚠️ ¿CONGELAR PREDICCIONES?\n\nAl continuar, se bloquearán para esta fase de forma permanente.");
+            if(!confirmacion) return;
+        }
+
+        const nodoUsuario = correoDestino.replace(/\./g, '_');
+        const cards = document.querySelectorAll('#formulario-predicciones .item-prediccion');
+        let actualizaciones = {};
+
+        cards.forEach(card => {
+            const idPartido = card.getAttribute('data-id');
+            const golL = card.querySelector('.pred-l').value;
+            const golV = card.querySelector('.pred-v').value;
+            if(golL !== '' && golV !== '') {
+                actualizaciones[idPartido] = { local: parseInt(golL), visitante: parseInt(golV) };
+            }
+        });
+
+        db.ref('predicciones/' + nodoUsuario).update(actualizaciones, (err) => {
+            if(!err) {
+                if(rolActual === 'usuario') {
+                    db.ref('bloqueosUsuarios/' + nodoUsuario + '/' + fase).set(true, () => {
+                        alert("🔒 ¡Predicciones enviadas y bloqueadas de forma segura!");
+                        cargarFormularioPredicciones();
+                    });
+                } else {
+                    alert("Predicciones actualizadas por el Administrador.");
+                }
+            }
+        });
+    }
+
+    function filtrarPartidosReales(fase, btn) {
+        faseFiltroReal = fase;
+        btn.parentElement.querySelectorAll('.fase-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPartidosReales();
+    }
+
+    function renderPartidosReales() {
+        const contenedor = document.getElementById('lista-partidos-reales');
+        if(!contenedor) return;
+        contenedor.innerHTML = '';
+        const filtrados = partidos.filter(p => p.fase === faseFiltroReal);
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos reales.</p>'; return; }
+
+        filtrados.forEach(p => {
+            const gl = p.golesLocal !== null ? p.golesLocal : '';
+            const gv = p.golesVisitante !== null ? p.golesVisitante : '';
+            const inputsDeshabilitados = (rolActual === 'admin') ? '' : 'disabled';
+
+            contenedor.innerHTML += `
+                <div class="partido-card real-card" data-id="${p.id}">
+                    <span class="equipo-texto derecha"><b>${p.local}</b></span>
+                    <div class="marcador-inputs">
+                        <input type="number" class="real-l" value="${gl}" min="0" ${inputsDeshabilitados}> 
+                        <span style="color:var(--text-muted);">vs</span> 
+                        <input type="number" class="real-v" value="${gv}" min="0" ${inputsDeshabilitados}>
+                    </div>
+                    <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
+                </div>`;
+        });
+    }
+
+    function guardarResultadosReales() {
+        const cards = document.querySelectorAll('#lista-partidos-reales .real-card');
+        cards.forEach(card => {
+            const idPartido = card.getAttribute('data-id');
+            const golL = card.querySelector('.real-l').value;
+            const golV = card.querySelector('.real-v').value;
+
+            const idx = partidos.findIndex(p => p.id === idPartido);
+            if(idx !== -1) {
+                if(golL !== '' && golV !== '') {
+                    partidos[idx].golesLocal = parseInt(golL);
+                    partidos[idx].golesVisitante = parseInt(golV);
+                } else {
+                    partidos[idx].golesLocal = null;
+                    partidos[idx].golesVisitante = null;
+                }
+            }
+        });
+        db.ref('partidos').set(partidos, () => { alert("Resultados guardados de forma segura."); });
+    }
+
+    function calcularPuntosUsuario(correo) {
+        let puntosTotales = 0;
+        const nodoUsuario = correo.replace(/\./g, '_');
+        const usuarioPreds = predicciones[nodoUsuario] || {};
+
+        partidos.forEach(p => {
+            if(p.golesLocal !== null && p.golesVisitante !== null) {
+                const pred = usuarioPreds[p.id];
+                if(pred !== undefined && pred !== null) { 
+                    let ganadorReal = p.golesLocal > p.golesVisitante ? 1 : (p.golesLocal < p.golesVisitante ? 2 : 0);
+                    let ganadorPred = pred.local > pred.visitante ? 1 : (pred.local < pred.visitante ? 2 : 0);
+
+                    if(ganadorReal === ganadorPred) puntosTotales += 3;
+                    if(p.golesLocal === pred.local && p.golesVisitante === pred.visitante) {
+                        puntosTotales += 3; 
+                    } else if(p.golesLocal === pred.local || p.golesVisitante === pred.visitante) {
+                        puntosTotales += 1; 
+                    }
+                }
+            }
+        });
+        return puntosTotales;
+    }
+
+    function renderRanking() {
+        const tbody = document.getElementById('tabla-ranking');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        let ranking = participantes.map(p => { return { nombre: p.nombre, puntos: calcularPuntosUsuario(p.correo) }; });
+        ranking.sort((a, b) => b.puntos - a.puntos);
+
+        if(ranking.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No hay participantes en juego.</td></tr>';
+            return;
+        }
+        ranking.forEach((p, index) => {
+            let colorMedalla = 'var(--text-main)';
+            if(index === 0) colorMedalla = '#ffd700'; // Oro
+            if(index === 1) colorMedalla = '#c0c0c0'; // Plata
+            if(index === 2) colorMedalla = '#cd7f32'; // Bronce
+            tbody.innerHTML += `<tr><td><b style="color:${colorMedalla}">#${index + 1}</b></td><td>${p.nombre}</td><td><strong style="color:var(--success);">${p.puntos} pts</strong></td></tr>`;
+        });
+    }
+</script>
+</body>
+</html>

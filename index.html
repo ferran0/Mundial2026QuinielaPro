@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina Principal - Quiniela Mundial 2026</title>
+    <style>
+        :root {
+            --bg-dark: #0f111a;
+            --card-dark: #161925;
+            --primary: #0072ff;
+            --primary-glow: rgba(0, 114, 255, 0.3);
+            --success: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.2);
+            --dark: #212529;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #23283d;
+            --whatsapp: #25d366;
+            --whatsapp-glow: rgba(37, 211, 102, 0.2);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            background-image: linear-gradient(rgba(15, 17, 26, 0.9), rgba(15, 17, 26, 0.9)), url('imagen.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e2538, #161925);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+        header h1 { margin: 0; font-size: 1.8rem; text-shadow: 0 0 10px var(--primary-glow); }
+        header p { margin: 5px 0 0 0; color: var(--text-muted); }
+        
+        .card {
+            background: var(--card-dark);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-link {
+            display: block;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+        .btn-link:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-link.success { background-color: var(--success); box-shadow: 0 4px 10px var(--success-glow); color: #000; }
+        .btn-link.whatsapp { background-color: var(--whatsapp); box-shadow: 0 4px 10px var(--whatsapp-glow); color: #000; }
+        
+        .pago-box {
+            background: #11131f;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 12px;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .pago-box.efectivo { border-left-color: var(--success); }
+        .pago-box p { margin: 5px 0; font-size: 0.95rem; }
+        .pago-box strong { color: var(--text-main); }
+        
+        ol { padding-left: 20px; margin: 0; }
+        li { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); }
+        li strong { color: var(--text-main); }
+        
+        .video-container {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .video-container p { font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        video {
+            width: 100%;
+            border-radius: 8px;
+            background: #000;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🏆 BIENVENIDO A LA QUINIELA 2026 🏆</h1>
+        <p>Pagina principal de la quinieela del mundial 2026</p>
+        <p>aqui puedes encocntrar toda la informacion y contacto del administrador</p>
+    </header>
+
+    <div class="card">
+        <h2>🔗 Enlaces Rápidos</h2>
+       <a href="reglas.html" class="btn-link" style="background: linear-gradient(135deg, #1e2538, #161925); border: 1px solid var(--border-color); box-shadow: none;">📋 Ver Reglamento Oficial Abierto</a>
+        <a href="quiniela.html" class="btn-link">💻 Entrar al Sistema de Llenado y Tabla Ranking</a>
+        <a href="https://forms.gle/By3eqNUebRbWWL9TA" target="_blank" class="btn-link success">📝 Enviar Formulario de Inscripción</a>
+    </div>
+
+    <div class="card">
+        <h2>💰 Formas de Pago</h2>
+        
+        <div class="pago-box">
+            <p><strong>🏦 Transferencia Bancaria o Deposito</strong></p>
+            <p><strong>Banco:</strong>Banrural</p>
+            <p><strong>Nombre:</strong>EDDY FERNANDO CÁNO MORALES</p>
+            <p><strong>Tipo de cuenta:</strong> Cuenta Monetaria</p>
+            <p><strong>Numero de cuenta:</strong> 3716015024</p>
+            <p style="font-size: 0.85rem; color: var(--danger); font-style: italic; margin-top: 8px;">⚠️ Es mandatorio enviar el comprobante digital al administrador para validar tu PIN.</p>
+        </div>
+
+        <div class="pago-box efectivo">
+            <p><strong>💵 Pago en Efectivo</strong></p>
+            <p>Para pagar en efectivo presenciales, coordina un punto de encuentro directamente con el administrador para procesar el dinero antes del inicio de la primera fecha límite.</p>
+        </div>
+    </div>
+
+    
+
+    <div class="card">
+        <h2>🎥 Video Guías de Soporte</h2>
+        
+        
+
+        <div class="video-container">
+            <p>▶️ Reglamento técnico y optimización de puntajes</p>
+            <video controls preload="metadata">
+                <source src="reglas_quiniela.mp4" type="video/mp4">
+                Tu dispositivo no soporta la reproducción de video.
+            </video>
+        </div>
+    </div>
+
+    
+        <div class="video-container">
+            <p>▶️ Reglamento técnico y optimización de puntajes</p>
+            <video controls preload="metadata">
+                <source src="reglas_quiniela.mp4" type="video/mp4">
+                Tu dispositivo no soporta la reproducción de video.
+            </video>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>💬 Soporte Técnico y Validaciones</h2>
+        <p>¿Listo para validar un comprobante de pago o resolver dudas de acceso? Pulsa el botón inferior para abrir un canal de chat directo:</p>
+        <a href="https://wa.me/+502 48279509?text=Hola!%20Te%20escribo%20por%20la%20Quiniela" target="_blank" class="btn-link whatsapp">🟢 Contactar Administrador vía WhatsApp</a>
+    </div>
+
+</div>
+
+</body>
+</html>
