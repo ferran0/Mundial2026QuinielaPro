@@ -3,117 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Principal - Quiniela Mundial 2026</title>
+    <title>Página Principal - Quiniela Mundial 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-dark: #0f111a;
-            --card-dark: #161925;
+            --bg-dark: #090b11;
+            --bg-gradient: radial-gradient(circle at top center, #111726 0%, #090b11 100%);
+            --card-dark: #121624;
+            --card-hover: #181e30;
             --primary: #0072ff;
-            --primary-glow: rgba(0, 114, 255, 0.3);
+            --primary-glow: rgba(0, 114, 255, 0.35);
             --success: #00e676;
-            --success-glow: rgba(0, 230, 118, 0.2);
-            --dark: #212529;
-            --text-main: #f1f5f9;
+            --success-glow: rgba(0, 230, 118, 0.25);
+            --warning: #ffb300;
+            --warning-glow: rgba(255, 179, 0, 0.25);
+            --danger: #ff1744;
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #23283d;
+            --border-color: #1e2638;
+            --border-hover: #2d3954;
             --whatsapp: #25d366;
-            --whatsapp-glow: rgba(37, 211, 102, 0.2);
+            --whatsapp-glow: rgba(37, 211, 102, 0.3);
+            
+            /* Gradiente de marca: Azul Premium a Verde Épico */
+            --brand-gradient: linear-gradient(135deg, #0072ff 0%, #00e676 100%);
         }
+
+        /* Animación FadeUp para las tarjetas */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
-            padding: 15px;
+            padding: 20px 15px;
             background-color: var(--bg-dark);
+            background-image: var(--bg-gradient);
             color: var(--text-main);
-            background-image: linear-gradient(rgba(15, 17, 26, 0.9), rgba(15, 17, 26, 0.9)), url('imagen.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            min-height: 100vh;
+            line-height: 1.6;
         }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
+
         header {
             text-align: center;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, #1e2538, #161925);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #141929, #0d111c);
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.6s ease-out forwards;
         }
-        header h1 { margin: 0; font-size: 1.8rem; text-shadow: 0 0 10px var(--primary-glow); }
-        header p { margin: 5px 0 0 0; color: var(--text-muted); }
-        
+
+        /* Línea decorativa superior con degradado */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-gradient);
+        }
+
+        header h1 {
+            margin: 0 0 12px 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 1.5px;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(0, 114, 255, 0.2));
+        }
+
+        header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
         .card {
             background: var(--card-dark);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
             border: 1px solid var(--border-color);
+            animation: fadeUp 0.6s ease-out both;
+            transition: border-color 0.3s, transform 0.3s;
         }
+
+        /* Escalado en orden de aparición para las cards */
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
+        .card:nth-child(5) { animation-delay: 0.4s; }
+        .card:nth-child(6) { animation-delay: 0.5s; }
+
+        .card:hover {
+            border-color: var(--border-hover);
+        }
+
         .card h2 {
             margin-top: 0;
-            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
             color: var(--text-main);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
+
+        /* --- BOTONES / ENLACES RÁPIDOS --- */
         .btn-link {
             display: block;
             text-align: center;
-            background-color: var(--primary);
-            color: white;
             text-decoration: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px var(--primary-glow);
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
         }
-        .btn-link:hover { opacity: 0.9; transform: translateY(-2px); }
-        .btn-link.success { background-color: var(--success); box-shadow: 0 4px 10px var(--success-glow); color: #000; }
-        .btn-link.whatsapp { background-color: var(--whatsapp); box-shadow: 0 4px 10px var(--whatsapp-glow); color: #000; }
         
-        .pago-box {
-            background: #11131f;
+        .btn-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-link.primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-link.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+            filter: brightness(1.1);
+        }
+
+        .btn-link.secondary {
+            background: #182033;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-link.secondary:hover {
+            background: var(--card-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .btn-link.success {
+            background: var(--success);
+            color: #04060a;
+            box-shadow: 0 4px 15px var(--success-glow);
+        }
+        .btn-link.success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--success-glow);
+            filter: brightness(1.05);
+        }
+
+        .btn-link.whatsapp {
+            background-color: var(--whatsapp);
+            color: #04060a;
+            box-shadow: 0 4px 15px var(--whatsapp-glow);
+        }
+        .btn-link.whatsapp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--whatsapp-glow);
+            filter: brightness(1.05);
+        }
+
+        /* --- GRID DE TARJETAS DINÁMICAS (INFORMACIÓN RELEVANTE) --- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .info-mini-card {
+            background: #0c0f17;
+            border: 1px solid var(--border-color);
             padding: 15px;
-            border-radius: 8px;
-            border-left: 5px solid var(--primary);
-            margin-bottom: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-mini-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* Ocupar ancho completo en la última tarjeta si es necesario */
+        .info-mini-card.full-width {
+            grid-column: span 2;
+        }
+        
+        .info-icon {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .info-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        /* --- SECCIÓN FORMAS DE PAGO --- */
+        .pago-box {
+            background: #0c0f17;
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 16px;
             border-top: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
         }
-        .pago-box.efectivo { border-left-color: var(--success); }
-        .pago-box p { margin: 5px 0; font-size: 0.95rem; }
-        .pago-box strong { color: var(--text-main); }
         
-        ol { padding-left: 20px; margin: 0; }
-        li { margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); }
-        li strong { color: var(--text-main); }
-        
-        .video-container {
-            margin-bottom: 20px;
-            text-align: left;
+        .pago-box.efectivo { 
+            border-left-color: var(--success); 
+            margin-bottom: 0;
         }
-        .video-container p { font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
+        
+        .pago-box p { 
+            margin: 6px 0; 
+            font-size: 0.95rem; 
+            color: var(--text-muted);
+        }
+        
+        .pago-box strong { 
+            color: var(--text-main); 
+        }
+
+        .cuenta-highlight {
+            font-family: 'JetBrains Mono', monospace;
+            background: #161b29;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: var(--success) !important;
+            font-size: 1.05rem;
+            border: 1px solid rgba(0, 230, 118, 0.15);
+            display: inline-block;
+            margin-top: 4px;
+        }
+        
+        .alerta-pago {
+            font-size: 0.88rem; 
+            color: #ff5252; 
+            font-style: italic; 
+            margin-top: 10px !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* --- SECCIÓN VIDEOS --- */
+        .video-container {
+            margin-bottom: 22px;
+        }
+        .video-container:last-child {
+            margin-bottom: 0;
+        }
+        
+        .video-badge { 
+            font-weight: 600; 
+            margin-bottom: 10px; 
+            font-size: 0.9rem; 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
         video {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
             background: #000;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            display: block;
+            transition: border-color 0.3s;
         }
-        .card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; }
+        video:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .card p { 
+            color: var(--text-muted); 
+            font-size: 0.95rem; 
+            line-height: 1.5; 
+        }
     </style>
 </head>
 <body>
@@ -122,54 +347,86 @@
 
     <header>
         <h1>🏆 BIENVENIDO A LA QUINIELA 2026 🏆</h1>
-        <p>Pagina principal de la quinieela del mundial 2026</p>
-        <p>aqui puedes encontrar toda la informacion y contacto del administrador</p>
+        <p>Página principal de la quiniela del mundial 2026, aquí puedes encontrar toda la información y contacto del administrador.</p>
     </header>
 
     <div class="card">
         <h2>🔗 Enlaces Rápidos</h2>
-       <a href="reglas.html" class="btn-link" style="background: linear-gradient(135deg, #1e2538, #161925); border: 1px solid var(--border-color); box-shadow: none;">📋 Ver Reglamento Oficial Abierto</a>
-        <a href="quiniela.html" class="btn-link">💻 Entrar al Sistema de Llenado y Tabla Ranking</a>
+        <a href="reglas.html" class="btn-link secondary">📋 Ver Reglamento Oficial Abierto</a>
+        <a href="quiniela.html" class="btn-link primary">💻 Entrar al Sistema de Llenado y Tabla Ranking</a>
         <a href="https://forms.gle/By3eqNUebRbWWL9TA" target="_blank" class="btn-link success">📝 Enviar Formulario de Inscripción</a>
+    </div>
+
+    <div class="card">
+        <h2>📌 Información Relevante</h2>
+        <div class="info-grid">
+            
+            <div class="info-mini-card">
+                <span class="info-icon">📅</span>
+                <span class="info-title">Fase de Inicio</span>
+                <p class="info-value">16avos de Final</p>
+            </div>
+            
+            <div class="info-mini-card">
+                <span class="info-icon">💵</span>
+                <span class="info-title">Inscripción</span>
+                <p class="info-value">Precio Fijo</p>
+            </div>
+            
+            <div class="info-mini-card">
+                <span class="info-icon">👑</span>
+                <span class="info-title">Premio Mayor</span>
+                <p class="info-value">70% del pozo acumulado</p>
+            </div>
+            
+            <div class="info-mini-card">
+                <span class="info-icon">🎯</span>
+                <span class="info-title">Ganadores</span>
+                <p class="info-value">Solo un ganador</p>
+            </div>
+            
+            <div class="info-mini-card full-width" style="border-left: 3px solid var(--warning);">
+                <span class="info-icon">⚖️</span>
+                <span class="info-title" style="color: var(--warning);">En Caso de Empates</span>
+                <p class="info-value" style="font-weight: 500; font-size: 0.9rem; color: var(--text-muted);">
+                    Si hay empate de puntos totales al finalizar, el premio acumulado se repartirá equitativamente entre los primeros <strong style="color:var(--text-main);">2 o 3 lugares</strong> del ranking.
+                </p>
+            </div>
+
+        </div>
     </div>
 
     <div class="card">
         <h2>💰 Formas de Pago</h2>
         
         <div class="pago-box">
-            <p><strong>🏦 Transferencia Bancaria o Deposito en cajas rurales</strong></p>
-            <p><strong>Banco:</strong> ---------------------</p>
-            <p><strong>Nombre:</strong> --------------------</p>
-            <p><strong>Tipo de cuenta:</strong> -------------------</p>
-            <p><strong>Numero de cuenta:</strong> -----------------</p>
-            <p style="font-size: 0.85rem; color: var(--danger); font-style: italic; margin-top: 8px;">⚠️ Es obligatorio enviar el comprobante digital al administrador para validar tu PIN.</p>
+            <p><strong>🏦 Transferencia Bancaria o Depósito en cajas rurales</strong></p>
+            <p><strong>Banco:</strong> Banrural</p>
+            <p><strong>Nombre:</strong> EDDY FERNANDO CÁNO MORALES</p>
+            <p><strong>Tipo de cuenta:</strong> Cuenta Monetaria</p>
+            <p><strong>Número de cuenta:</strong> <span class="cuenta-highlight">3716015024</span></p>
+            <p class="alerta-pago">⚠️ Es obligatorio enviar el comprobante digital al administrador para validar tu PIN.</p>
         </div>
 
         <div class="pago-box efectivo">
             <p><strong>💵 Pago en Efectivo</strong></p>
-            <p>Para pagar en efectivo presenciales, coordina un punto de encuentro directamente con el administrador para procesar el dinero antes del inicio de la primera fecha límite y asi obtener tu PIN de acceso..</p>
+            <p>Para pagar en efectivo presenciales, coordina un punto de encuentro directamente con el administrador para procesar el dinero antes del inicio de la primera fecha límite y así obtener tu PIN de acceso.</p>
         </div>
     </div>
-
-    
 
     <div class="card">
         <h2>🎥 Video Guías de Soporte</h2>
         
-        
-
         <div class="video-container">
-            <p>▶️ Como inscribirte y participar en la quiniela</p>
+            <div class="video-badge">▶️ Cómo inscribirte y participar en la quiniela</div>
             <video controls preload="metadata">
                 <source src="inscribir.mp4" type="video/mp4">
                 Tu dispositivo no soporta la reproducción de video.
             </video>
         </div>
-    </div>
 
-    
         <div class="video-container">
-            <p>▶️ Como funciona el sistema para hacer tus predicciones</p>
+            <div class="video-badge">▶️ Cómo funciona el sistema para hacer tus predicciones</div>
             <video controls preload="metadata">
                 <source src="sistem.mp4" type="video/mp4">
                 Tu dispositivo no soporta la reproducción de video.
@@ -179,11 +436,12 @@
 
     <div class="card">
         <h2>💬 Soporte Técnico o dudas</h2>
-        <p>Te dejo mi contacto para resolver dudas de acceso a al sistema. Pulsa el botón inferior para abrir un canal de chat directo:</p>
-        <a href="https://wa.me/+502 41054454?text=Hola!%20Te%20escribo%20por%20la%20Quiniela" target="_blank" class="btn-link whatsapp">🟢 Contactar Administrador vía WhatsApp</a>
+        <p>Te dejo mi contacto para resolver dudas de acceso al sistema. Pulsa el botón inferior para abrir un canal de chat directo:</p>
+        <a href="https://wa.me/+50241054454?text=Hola!%20Te%20escribo%20por%20la%20Quiniela" target="_blank" class="btn-link whatsapp">🟢 Contactar Administrador vía WhatsApp</a>
     </div>
 
 </div>
 
 </body>
 </html>
+
