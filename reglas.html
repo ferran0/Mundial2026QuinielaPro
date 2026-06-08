@@ -4,139 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reglamento Oficial - Quiniela Mundial 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-dark: #0f111a;
-            --card-dark: #161925;
+            --bg-dark: #090b11;
+            --bg-gradient: radial-gradient(circle at top center, #111726 0%, #090b11 100%);
+            --card-dark: #121624;
+            --card-hover: #181e30;
             --primary: #0072ff;
-            --primary-glow: rgba(0, 114, 255, 0.3);
+            --primary-glow: rgba(0, 114, 255, 0.35);
             --success: #00e676;
-            --success-glow: rgba(0, 230, 118, 0.2);
-            --danger: #ff1744;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: #23283d;
+            --success-glow: rgba(0, 230, 118, 0.25);
             --warning: #ffb300;
+            --warning-glow: rgba(255, 179, 0, 0.25);
+            --danger: #ff1744;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e2638;
+            --border-hover: #2d3954;
+            
+            --brand-gradient: linear-gradient(135deg, #0072ff 0%, #00e676 100%);
         }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
-            padding: 15px;
+            padding: 20px 15px;
             background-color: var(--bg-dark);
+            background-image: var(--bg-gradient);
             color: var(--text-main);
-            background-image: linear-gradient(rgba(15, 17, 26, 0.92), rgba(15, 17, 26, 0.92)), url('imagen.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            min-height: 100vh;
+            line-height: 1.6;
         }
+
         .container {
-            max-width: 700px;
+            max-width: 650px;
             margin: 0 auto;
             padding-bottom: 40px;
         }
+
         header {
             text-align: center;
             margin-bottom: 25px;
-            background: linear-gradient(135deg, #1e2538, #161925);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #141929, #0d111c);
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.6s ease-out forwards;
         }
-        header h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; text-shadow: 0 0 10px var(--primary-glow); }
-        header p { margin: 8px 0 0 0; color: var(--warning); font-weight: bold; font-size: 0.95rem; }
-        
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-gradient);
+        }
+
+        header h1 {
+            margin: 0 0 8px 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.6rem;
+            letter-spacing: 1.5px;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(0, 114, 255, 0.2));
+        }
+
+        header p {
+            margin: 0;
+            color: var(--warning);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         .card {
             background: var(--card-dark);
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
+            animation: fadeUp 0.6s ease-out both;
+            transition: border-color 0.3s;
         }
+
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
+        .card:nth-child(5) { animation-delay: 0.4s; }
+
+        .card:hover {
+            border-color: var(--border-hover);
+        }
+
         .card h2 {
             margin-top: 0;
-            font-size: 1.3rem;
+            margin-bottom: 18px;
+            font-size: 1.35rem;
+            font-weight: 700;
             color: var(--text-main);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
-        
-        /* Formato de Listas Especiales */
-        ul, ol { padding-left: 20px; margin: 0; }
-        li { margin-bottom: 12px; font-size: 0.95rem; line-height: 1.5; color: var(--text-muted); }
-        li strong { color: var(--text-main); }
-        
-        /* Bloques de Alerta Estrictos */
-        .alert-block {
-            background: rgba(255, 23, 68, 0.08);
-            border-left: 5px solid var(--danger);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-top: 1px solid rgba(255, 23, 68, 0.2);
-            border-right: 1px solid rgba(255, 23, 68, 0.2);
-            border-bottom: 1px solid rgba(255, 23, 68, 0.2);
-        }
-        .alert-block h4 { margin: 0 0 5px 0; color: #ff5252; font-size: 1rem; }
-        .alert-block p { margin: 0; color: var(--text-main); font-size: 0.9rem; }
 
-        .prize-box {
-            background: linear-gradient(135deg, rgba(0, 114, 255, 0.1), rgba(0, 230, 118, 0.05));
-            border-left: 5px solid var(--success);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 15px 0;
-            border-top: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            margin-bottom: 15px;
         }
+
+        /* FORMATO DE LISTAS CLARAS */
+        ol, ul {
+            padding-left: 22px;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        li strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* BLOQUE DE ALERTA */
+        .alert-block {
+            background: rgba(255, 23, 68, 0.04);
+            border-left: 4px solid var(--danger);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(255, 23, 68, 0.15);
+            border-right: 1px solid rgba(255, 23, 68, 0.15);
+            border-bottom: 1px solid rgba(255, 23, 68, 0.15);
+        }
+
+        .alert-block h4 {
+            margin: 0 0 6px 0;
+            color: #ff5252;
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .alert-block p {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        /* CAJA PREMIUM DE PREMIACIÓN */
+        .prize-box {
+            background: linear-gradient(135deg, rgba(0, 114, 255, 0.08) 0%, rgba(0, 230, 118, 0.04) 100%);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--success);
+            padding: 22px;
+            border-radius: 14px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .prize-box p {
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
         .prize-tag {
-            font-size: 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
             font-weight: 900;
             color: var(--success);
-            text-shadow: 0 0 10px var(--success-glow);
-            margin: 10px 0;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px var(--success-glow);
+            margin: 8px 0;
         }
 
+        /* MATRIZ DE PUNTOS */
         .punto-item {
-            background: #11131f;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 8px;
+            background: #0c0f17;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 10px;
             border: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.95rem;
         }
-        .punto-item span { font-weight: bold; color: var(--primary); }
 
+        .punto-item .concepto {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .punto-item .puntos-badge {
+            background: rgba(0, 114, 255, 0.15);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border: 1px solid rgba(0, 114, 255, 0.25);
+        }
+
+        .ejemplo-box {
+            background: #0c0f17;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        /* BOTÓN DE RETORNO */
         .btn-back {
             display: inline-block;
             text-align: center;
-            background-color: var(--primary);
-            color: white;
             text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px var(--primary-glow);
-            margin-top: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px var(--primary-glow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 100%;
             box-sizing: border-box;
+            margin-top: 10px;
         }
-        .btn-back:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--primary-glow);
+            filter: brightness(1.1);
+        }
 
         @media (min-width: 768px) {
             body { padding: 25px; }
-            header { padding: 30px; }
-            header h1 { font-size: 2.2rem; }
+            header { padding: 40px 30px; }
+            header h1 { font-size: 3rem; }
             .btn-back { width: auto; }
         }
     </style>
@@ -146,64 +294,78 @@
 <div class="container">
 
     <header>
-        <h1>📋 REGLAMENTO OFICIAL 2026</h1>
-        <p>LEER ATENTAMENTE — SIN EXCEPCIONES</p>
+        <h1>📋 REGLAMENTO OFICIAL</h1>
+        <p>Reglas claras para todos — Sin excepciones</p>
     </header>
 
     <div class="card">
-        <h2>1. Admisión y Registro de Jugadores</h2>
-        <p>Para garantizar el orden y la total transparencia del torneo, el proceso de ingreso es estricto y automatizado:</p>
+        <h2>1. Inscripción y Registro de Jugadores</h2>
+        <p>Para que todo se maneje de forma ordenada y transparente, tu ingreso al torneo debe seguir estos sencillos pasos:</p>
         <ol>
-            <li><strong>Formulario Obligatorio:</strong> Es requisito indispensable registrarse introduciendo el nombre completo, tu correo o numero y subir la imagen de comprobacion de pago en el **Formulario de Google oficial**. Puedes obtener tu PIN presencial junto con el pago en efectivo.</li>
-            <li><strong>Verificación de Identidad:</strong> El nombre que ingreses en el formulario sera el que aparezca el sistema de quinielas.</li>
-            
+            <li><strong>Llenar el Formulario:</strong> Es obligatorio registrarse ingresando tu nombre completo, tu teléfono y subiendo la foto de tu comprobante de pago en el **Formulario de Google oficial**. No se aceptarán registros por mensajes de WhatsApp ni de palabra.</li>
+            <li><strong>Tu Nombre en el Sistema:</strong> El nombre exacto que coloques en el formulario de Google será el que usaremos para darte de alta en la plataforma de resultados.</li>
         </ol>
         
         <div class="alert-block">
-            <h4>🚨 CONDICIÓN DE PAGO OBLIGATORIA:</h4>
-            <p><strong>Si no se efectúa y valida el pago correspondiente, NO se dará de alta al usuario ni se le otorgará el PIN de acceso.</strong> El sistema de llenado permanecerá completamente bloqueado para dicha persona. Sin excepción, nadie puede registrar marcadores si no saldó su cuota de ingreso.</p>
+            <h4>🚨 REQUISITO IMPORTANTE DE PAGO:</h4>
+            <p><strong>Si no realizas tu pago y el administrador no lo valida, NO podrás ingresar al sistema ni se te entregará tu PIN secreto.</strong> No podrás colocar tus predicciones si tienes saldo pendiente. ¡Asegura tu cuota a tiempo!</p>
         </div>
     </div>
 
     <div class="card">
-        <h2>2. Distribución del Pozo Económico</h2>
-        <p>Este torneo premia la excelencia y el conocimiento puro de fútbol bajo la modalidad más competitiva del mercado:</p>
+        <h2>2. Premios y Dinero Acumulado</h2>
+        <p>Aquí premiamos al mejor estratega del torneo bajo un formato directo y muy competitivo:</p>
         
         <div class="prize-box">
-            <p>🏆 <strong>EL GANADOR SE LLEVA TODO</strong> 🏆</p>
+            <p>👑 <strong>EL GANADOR SE LLEVA EL PREMIO MAYOR</strong> 👑</p>
             <div class="prize-tag">70% DEL POZO</div>
-            <p style="margin: 0; color: var(--text-main); font-weight: 500;">Habrá UN SOLO GANADOR ABSOLUTO en toda la competencia.</p>
+            <p>El torneo busca premiar a un único ganador absoluto.</p>
         </div>
-        <p>Aquel participante que finalice en el <strong>Puesto #1</strong> del Ranking General en Vivo al concluir el último partido del Mundial, se adjudicará de forma directa el <strong>70% de la totalidad de los fondos recaudados</strong>.</p>
-        <strong>En caso de empate de puntos el premio se divide en partes iguales</strong>.</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">* El 30% restante se destinará según lo establecido por la organización para cubrir costos logísticos, mantenimiento de servidores web de la plataforma.</p>
+        <p>La persona que termine en el **Puesto #1** de la Tabla de Posiciones cuando finalice el último partido del Mundial, se ganará automáticamente el **70% de todo el dinero juntado** de las inscripciones.</p>
+        
+        <div class="alert-block" style="border-left-color: var(--warning); background: rgba(255, 179, 0, 0.02); border-top-color: rgba(255, 179, 0, 0.15); border-right-color: rgba(255, 179, 0, 0.15); border-bottom-color: rgba(255, 179, 0, 0.15);">
+            <h4>⚖️ ¿QUÉ PASA SI HAY EMPATE DE PUNTOS?</h4>
+            <p style="color: var(--text-muted);">Si al terminar el Mundial hay dos o más personas empatadas con los mismos puntos en el primer lugar, <strong>el premio acumulado se repartirá en partes iguales entre los primeros 2 o 3 lugares</strong> del ranking según corresponda.</p>
+        </div>
+        
+        <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 15px;">
+            * El 30% restante del pozo es utilizado por la organización para cubrir los costos de logística, administración y el mantenimiento de los servidores de esta página web.
+        </p>
     </div>
 
     <div class="card">
-        <h2>3. Asignación Matemática de Puntos</h2>
-        <p>El sistema informático de la plataforma automatiza los puntos de forma inmediata al finalizar los partidos oficiales según la siguiente matriz acumulativa:</p>
+        <h2>3. ¿Cómo se Suman los Puntos?</h2>
+        <p>El sistema sumará tus puntos automáticamente en cuanto terminen los partidos de la vida real, aplicando estas reglas:</p>
         
         <div class="punto-item">
-            🎤 <span>+3 Puntos</span> Acertar Resultado del equipo ganador (Ganador)
+            <span class="concepto">🎤 Acertar qué equipo gana (o si queda en empate)</span>
+            <span class="puntos-badge">+3 Puntos</span>
         </div>
+        
         <div class="punto-item">
-            🎯 <span>+3 Puntos</span> Acertar Marcador Exacto (acertar los goles exactos)
+            <span class="concepto">🎯 Acertar el marcador exacto del partido</span>
+            <span class="puntos-badge">+3 Puntos</span>
         </div>
+        
         <div class="punto-item">
-            🏃‍♂️ <span>+1 Punto</span> Acertar la cantidad exacta de goles de un solo equipo (Sin importar si pierde o gana)
+            <span class="concepto">🏃‍♂️ Acertar los goles de un solo equipo (aunque no le atines al otro)</span>
+            <span class="puntos-badge">+1 Punto</span>
         </div>
 
-        <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Ejemplo práctico:</strong> Si pronosticás un 2-1 y el partido real termina 2-1, sumás 6 puntos en total (+3 por ganador y +3 por el resultado exacto). Si el partido termina 2-0, sumás 4 puntos (+3 por acertar ganador y +1 por pegarle a los 2 goles del local).</p>
+        <div class="ejemplo-box">
+            <strong>💡 Ejemplo práctico para entenderlo fácil:</strong><br>
+            • Si tú pronosticas que un partido queda <strong>2 - 1</strong> y el resultado real es <strong>2 - 1</strong>, te ganas <strong>6 puntos</strong> en total (+3 por acertar al ganador y +3 por el marcador exacto).<br><br>
+            • Si pronosticas <strong>2 - 1</strong> pero el partido real termina <strong>2 - 0</strong>, te ganas <strong>4 puntos</strong> (+3 por acertar que ganaba ese equipo y +1 por haber adivinado que el local metía exactamente 2 goles).
+        </div>
     </div>
 
     <div class="card">
-        <h2>4. Seguridad y Cierre de Fechas</h2>
+        <h2>4. Seguridad, Bloqueos y Transparencia</h2>
         <ul>
-             <li><strong>Fechas Importantes:</strong> Tienes hasta el 28 de Junio para inscribirte, antes de que empieze los dieciseisavos de final. Luego debes estar pendiente de las siguientes fases como octavos, cuartos semi y final para ir llenando tu quiniela.</li>
-            <li><strong>Cierre General:</strong> El administrador bloqueará el acceso a las fases de forma global antes del pitazo inicial del primer partido de cada ronda.</li>
-            <li><strong>Auto-Bloqueo Seguro:</strong> Al terminar de rellenar tus goles, es obligatorio pulsar el botón <strong>"Enviar y Bloquear" (debes de ser cuidadoso al llenar tu quiniela ya que solo se permite una sola vez).</strong>.</li>
-            <li><strong>Inmutabilidad:</strong> Una vez bloqueados, los marcadores quedan encriptados en la base de datos de Firebase. Ni el jugador ni nadie puede modificarlos bajo ninguna circunstancia, eliminando cualquier sospecha de fraude.</li>
-            <li><strong>Transparencia:</strong> Todos los jugadores disponen de la pestaña <strong>"Espiar"</strong> para revisar en vivo qué ingresó cualquier otro competidor, garantizando transparencia absoluta.</li>
+            <li><strong>Cierre de la Ronda:</strong> El administrador cerrará por completo el acceso a la fase de juego antes de que inicie el primer partido de dicha ronda. Después de esa hora, nadie podrá meter marcadores.</li>
+            <li><strong>Envío Seguro de Goles:</strong> Cuando termines de escribir tus predicciones, debes presionar el botón <strong>"Enviar y Bloquear"</strong>. Revisa muy bien tus números antes de presionar, ya que el sistema solo te dejará guardar tus marcadores una única vez de forma permanente.</li>
+            <li><strong>Sin Modificaciones:</strong> Una vez bloqueados, tus marcadores se guardan de forma encriptada en nuestra base de datos. Nadie (ni tú, ni el administrador) podrá cambiarlos bajo ningún motivo, asegurando un juego 100% limpio.</li>
+            <li><strong>Pestaña "Espiar":</strong> Todos los participantes tendrán acceso a la opción "Espiar" para revisar en tiempo real qué marcadores puso cualquier otro jugador del torneo, garantizando que todo sea totalmente transparente.</li>
         </ul>
     </div>
 
@@ -215,3 +377,4 @@
 
 </body>
 </html>
+

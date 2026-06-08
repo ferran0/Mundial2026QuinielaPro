@@ -23,315 +23,243 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 10px;
+            padding: 10px 10px 90px 10px; /* Margen inferior extra para la barra fija */
             background-color: var(--bg-dark);
             color: var(--text-main);
-            background-image: linear-gradient(rgba(15, 17, 26, 0.88), rgba(15, 17, 26, 0.88)), url('imagen.jpeg');
+            background-image: linear-gradient(rgba(15, 17, 26, 0.92), rgba(15, 17, 26, 0.92)), url('imagen.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
+        
+        /* PANTALLA DE CARGA INICIAL */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* NOTIFICACIONES TOAST */
+        #toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 10000;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .toast {
+            background: #1e2538; color: var(--text-main); padding: 12px 20px;
+            border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            border-left: 5px solid var(--primary); font-weight: 500;
+            animation: slideIn 0.3s ease forwards; min-width: 250px;
+        }
+        .toast.success { border-left-color: var(--success); }
+        .toast.danger { border-left-color: var(--danger); }
+        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+
+        /* MODAL PERSONALIZADO */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); display: none; justify-content: center;
+            align-items: center; z-index: 9998; padding: 20px; box-sizing: border-box;
+        }
+        .modal-content {
+            background: var(--card-dark); padding: 25px; border-radius: 12px;
+            max-width: 400px; width: 100%; border: 1px solid var(--border-color);
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+
         header {
-            text-align: center;
-            margin-bottom: 20px;
+            text-align: center; margin-bottom: 20px;
             background: linear-gradient(135deg, #1e2538, #161925);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 12px; border: 1px solid var(--border-color);
         }
-        header h1 {
-            font-size: 1.6rem;
-            margin: 5px 0;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-        header p {
-            color: var(--text-muted);
-            margin: 5px 0 0 0;
-        }
+        header h1 { font-size: 1.4rem; margin: 5px 0; text-shadow: 0 0 10px var(--primary-glow); }
+
+        /* LOGIN SEPARADO VISUALMENTE */
         .login-box {
-            background: var(--card-dark);
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 400px;
-            margin: 40px auto;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            border: 1px solid var(--border-color);
+            background: var(--card-dark); padding: 30px 25px; border-radius: 16px;
+            max-width: 380px; margin: 40px auto; text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6); border: 1px solid var(--border-color);
         }
-        .login-box h3 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            color: var(--text-main);
+        .login-box h3 { margin-top: 0; margin-bottom: 25px; font-size: 1.3rem; }
+        .btn-ghost {
+            background: transparent; color: var(--text-muted); border: 1px dashed var(--border-color);
+            padding: 12px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;
         }
-        .nav-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
+        .login-box p { font-size: 0.8rem; color: var(--text-muted); margin: 6px 0 20px 0; line-height: 1.3; }
+
+        /* BARRA DE NAVEGACIÓN INFERIOR ESTILO MÓVIL */
+        .nav-mobile-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 68px;
+            background: #131622; border-top: 1px solid var(--border-color);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 999; box-shadow: 0 -4px 15px rgba(0,0,0,0.4);
         }
-        .tab-btn {
-            flex: 1 1 calc(50% - 8px);
-            min-width: 120px;
-            padding: 12px 5px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-dark);
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            text-align: center;
+        .nav-item-btn {
+            background: none; border: none; color: var(--text-muted);
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; font-size: 0.75rem; font-weight: 500;
+            cursor: pointer; flex: 1; height: 100%; transition: all 0.2s; gap: 4px;
         }
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 12px var(--primary-glow);
-        }
+        .nav-item-btn .nav-icon { font-size: 1.3rem; }
+        .nav-item-btn.active { color: var(--primary); font-weight: bold; }
+
         .panel {
-            background-color: var(--card-dark);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            border: 1px solid var(--border-color);
-            display: none;
-            margin-bottom: 20px;
+            background-color: var(--card-dark); padding: 20px; border-radius: 12px;
+            border: 1px solid var(--border-color); display: none; margin-bottom: 20px;
         }
         .panel.active { display: block; }
         .panel h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        .panel h3 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background-color: #0f111a;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 8px var(--primary-glow);
-        }
-        button.btn {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 10px var(--primary-glow);
-        }
-        button.btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: #11131f;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: left;
-            font-size: 0.9rem;
-        }
-        th { background-color: #1a1e30; color: var(--text-muted); font-weight: 600; }
-        td { color: var(--text-main); }
-        
-        .partido-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            background: #11131f;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            border-left: 5px solid var(--primary);
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .partido-card:hover {
-            border-color: #2c324d;
-        }
-        .partido-card .equipo-texto {
-            font-size: 1rem;
-            font-weight: 500;
-            word-break: break-word;
-        }
-        .partido-card .marcador-inputs {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .partido-card input[type="number"], 
-        .partido-card input[type="text"] {
-            width: 65px;
-            text-align: center;
-            padding: 8px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-        }
-        
-        .fase-selector {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            background: #11131f;
-            padding: 8px;
-            border-radius: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-        }
-        .fase-btn {
-            padding: 8px 14px;
-            border: 1px solid var(--border-color);
-            background: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .fase-btn.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 8px var(--primary-glow);
-        }
-        .eliminar-btn {
-            background-color: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            color: white;
-            text-transform: uppercase;
-        }
-        .badge-success { background-color: var(--success); box-shadow: 0 0 8px var(--success-glow); }
-        .badge-danger { background-color: var(--danger); }
-        
-        .alert-info {
-            background-color: rgba(255, 23, 68, 0.15);
-            color: #ff5252;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 23, 68, 0.3);
-        }
-        hr {
-            border: 0;
-            border-top: 1px solid var(--border-color);
-            margin: 20px 0;
+            margin-top: 0; margin-bottom: 20px; font-size: 1.3rem;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
         }
 
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; }
+        input, select {
+            width: 100%; padding: 12px; background-color: #0f111a;
+            border: 1px solid var(--border-color); color: var(--text-main);
+            border-radius: 8px; box-sizing: border-box; font-size: 1rem;
+        }
+        button.btn {
+            width: 100%; background-color: var(--primary); color: white;
+            padding: 12px 20px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; font-size: 1rem;
+            box-shadow: 0 4px 10px var(--primary-glow); transition: all 0.2s;
+        }
+        button.btn-cancel { background-color: #2c324d; color: var(--text-main); }
+
+        /* TARJETAS DE ESTADÍSTICAS PERSONALES */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #11131f; border: 1px solid var(--border-color);
+            padding: 12px 5px; border-radius: 10px; text-align: center;
+        }
+        .stat-card .stat-val { font-size: 1.4rem; font-weight: bold; color: var(--primary); margin-bottom: 2px; }
+        .stat-card .stat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* BARRA DE PROGRESO EN EL RANKING */
+        .player-cell { display: flex; flex-direction: column; gap: 4px; }
+        .progress-container {
+            width: 100%; height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;
+        }
+        .progress-bar { height: 100%; background: var(--primary); border-radius: 3px; width: 0%; transition: width 0.5s ease; }
+        
+        .fila-usuario-actual {
+            background: linear-gradient(90deg, rgba(0, 114, 255, 0.12), transparent) !important;
+        }
+
+        /* INPUTS GRANDES TIPO DISPLAY ADAPTADOS PARA MÓVIL (MÍNIMO 52x48px) */
+        .partido-card .marcador-inputs input[type="number"] {
+            width: 58px; height: 48px; text-align: center; padding: 0;
+            font-size: 1.5rem; font-weight: bold; background-color: var(--bg-dark);
+            border: 1px solid var(--border-color); border-radius: 8px; color: white;
+        }
+
+        .partido-card {
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            background: #11131f; padding: 15px; margin-bottom: 12px;
+            border-radius: 10px; border: 1px solid var(--border-color); border-left: 5px solid var(--primary);
+        }
+        .partido-card .marcador-inputs { display: flex; align-items: center; gap: 12px; }
+        .fase-selector { display: flex; gap: 6px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 4px; }
+        .fase-btn { padding: 6px 12px; border: 1px solid var(--border-color); background: none; color: var(--text-muted); cursor: pointer; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; }
+        .fase-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+        
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); background: #11131f; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: left; font-size: 0.85rem; }
+        th { background-color: #1a1e30; color: var(--text-muted); }
+
+        .eliminar-btn { background-color: var(--danger); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+        .status-badge { padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; color: white; text-transform: uppercase; }
+        .badge-success { background-color: var(--success); }
+        .badge-danger { background-color: var(--danger); }
+        .alert-info { background-color: rgba(255, 23, 68, 0.12); color: #ff5252; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-size: 0.85rem; font-weight: bold; border: 1px solid rgba(255, 23, 68, 0.25); }
+
         @media (min-width: 768px) {
-            body { padding: 25px; }
-            header { padding: 30px; margin-bottom: 25px; }
-            header h1 { font-size: 2.4rem; }
-            .tab-btn { flex: none; padding: 12px 24px; font-size: 1rem; }
-            .panel { padding: 25px; }
-            button.btn { width: auto; }
-            
-            .grid-dos-columnas {
-                display: grid;
-                grid-template-columns: 1fr 1.2fr;
-                gap: 25px;
-            }
-            .grid-ranking {
-                display: grid;
-                grid-template-columns: 1.2fr 0.8fr;
-                gap: 25px;
-            }
-            
-            .partido-card {
-                flex-direction: row;
-                justify-content: space-between;
-                text-align: left;
-                padding: 12px 20px;
-            }
-            .partido-card .equipo-texto {
-                flex: 1;
-            }
-            .partido-card .equipo-texto.derecha { text-align: right; padding-right: 20px; }
-            .partido-card .equipo-texto.izquierda { text-align: left; padding-left: 20px; }
+            body { padding: 25px 25px 90px 25px; }
+            header h1 { font-size: 2rem; }
+            .grid-dos-columnas { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; }
+            .grid-ranking { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px; }
+            .partido-card { flex-direction: row; justify-content: space-between; padding: 12px 20px; }
+            .partido-card .equipo-texto { flex: 1; }
+            .partido-card .equipo-texto.derecha { text-align: right; padding-right: 15px; }
+            .partido-card .equipo-texto.izquierda { text-align: left; padding-left: 15px; }
+            .stat-card { padding: 15px 10px; }
+            .stat-card .stat-val { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
+<div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 1px;">CONECTANDO CON FIREBASE...</p>
+</div>
+
+<div id="toast-container"></div>
+
+<div id="custom-modal" class="modal">
+    <div class="modal-content">
+        <h3 id="modal-title" style="margin-top:0; color:var(--text-main);">¿Confirmar Acción?</h3>
+        <p id="modal-text" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;"></p>
+        <div class="modal-btns">
+            <button class="btn btn-cancel" onclick="closeCustomModal()">Cancelar</button>
+            <button class="btn" id="modal-confirm-btn" style="background-color:var(--danger); box-shadow:none;">Confirmar</button>
+        </div>
+    </div>
+</div>
+
 <header>
     <h1>🏆 QUINIELA MUNDIAL 2026 🏆</h1>
-    <p id="txt-bienvenida">Cargando ecosistema digital...</p>
-    <button id="btn-cerrar-sesion" class="eliminar-btn" style="display:none; margin: 15px auto 0 auto;" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <p id="txt-bienvenida" style="color: var(--text-muted); margin: 5px 0 0 0; font-size: 0.9rem;">Cargando ecosistema digital...</p>
 </header>
 
 <div id="panel-login" class="login-box">
     <h3>Ingresar al Sistema</h3>
+    
     <div class="form-group">
-        <label>Introduce tu PIN Secreto:</label>
-        <input type="password" id="input-pin" placeholder="•••• (Vacío para modo visor)">
+        <label for="input-pin">Ingreso con PIN Secreto:</label>
+        <input type="password" id="input-pin" placeholder="••••">
     </div>
-    <button class="btn" onclick="verificarPIN()">Autenticar Entrar</button>
+    <button class="btn" onclick="verificarPIN()" style="margin-bottom: 5px;">Ingresar con PIN</button>
+    <p>Permite rellenar, guardar y congelar tus predicciones de partidos.</p>
+    
+    <div style="margin: 20px 0; border-top: 1px solid var(--border-color); position: relative;">
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--card-dark); padding: 0 10px; color: var(--text-muted); font-size: 0.75rem;">Ó</span>
+    </div>
+
+    <button class="btn-ghost" onclick="entrarComoVisor()">Entrar como Visor</button>
+    <p style="margin-bottom:0;">Acceso libre para espiar resultados reales, ver predicciones ajenas y la tabla general.</p>
 </div>
 
 <div id="contenido-sistema" style="display: none;">
     
-    <div class="nav-tabs" id="barra-navegacion">
-        <button class="tab-btn" id="tab-adm-partidos" onclick="switchTab('tab-partidos')">⚙️ Partidos</button>
-        <button class="tab-btn" id="tab-adm-participantes" onclick="switchTab('tab-participantes')">👥 Jugadores</button>
-        <button class="tab-btn" id="tab-usr-predicciones" onclick="switchTab('tab-predicciones')">✍️ Mis Predicciones</button>
-        <button class="tab-btn" id="tab-vis-predicciones" onclick="switchTab('tab-visor-predicciones')">🔍 Espiar</button>
-        <button class="tab-btn active" id="tab-gen-ranking" onclick="switchTab('tab-ranking')">📊 Tabla Ranking</button>
+    <div id="wrapper-stats-personales" class="stats-grid" style="display:none;">
+        <div class="stat-card">
+            <div class="stat-val" id="stat-pts">0</div>
+            <div class="stat-lbl">Pts Totales</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-exactas">0</div>
+            <div class="stat-lbl">Exactas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" id="stat-porcentaje">0%</div>
+            <div class="stat-lbl">Aciertos</div>
+        </div>
     </div>
 
     <div id="tab-partidos" class="panel">
@@ -434,8 +362,13 @@
         <div id="status-fase-bloqueada" style="display:none; color:var(--danger); font-weight:bold; margin:15px 0;">
             🔒 Esta fase se encuentra CERRADA de manera general por el Administrador.
         </div>
+        
+        <div id="aviso-fase-eliminatoria" class="alert-info" style="display:none; background-color: rgba(255, 159, 67, 0.1); border-color: rgba(255, 159, 67, 0.3); color: #ff9f43;">
+            ⚠️ En ronda eliminatoria debe haber un ganador. No se permiten empates.
+        </div>
+
         <div id="formulario-predicciones" style="margin-top: 20px;"></div>
-        <button class="btn" id="btn-guardar-preds" style="display:none; margin-top:20px; background-color: var(--success); box-shadow:0 4px 12px var(--success-glow);" onclick="guardarPredicciones()">🔒 Enviar y Bloquear Predicciones</button>
+        <button class="btn" id="btn-guardar-preds" style="display:none; margin-top:20px; background-color: var(--success); box-shadow:0 4px 12px var(--success-glow);" onclick="prepararGuardadoPredicciones()">🔒 Enviar y Bloquear Predicciones</button>
     </div>
 
     <div id="tab-visor-predicciones" class="panel">
@@ -472,15 +405,20 @@
                     <button class="fase-btn" onclick="filtrarPartidosReales('semi', this)">Semi</button>
                     <button class="fase-btn" onclick="filtrarPartidosReales('final', this)">Final</button>
                 </div>
+                
+                <div id="aviso-fase-eliminatoria-real" class="alert-info" style="display:none; background-color: rgba(255, 159, 67, 0.1); border-color: rgba(255, 159, 67, 0.3); color: #ff9f43; margin-bottom: 12px;">
+                    ⚠️ En ronda eliminatoria debe haber un ganador. No se permiten empates.
+                </div>
+
                 <div id="lista-partidos-reales"></div>
-                <button class="btn" id="btn-guardar-reales" style="background-color: var(--success); box-shadow:0 4px 12px var(--success-glow); margin-top: 15px; display:none;" onclick="guardarResultadosReales()">Guardar Resultados y Calcular Puntos</button>
+                <button class="btn" id="btn-guardar-reales" style="background-color: var(--success); box-shadow:0 4px 12px var(--success-glow); margin-top: 15px; display:none;" onclick="prepararGuardadoReales()">Guardar Resultados y Calcular Puntos</button>
             </div>
             <div>
                 <h3>🏆 Ranking General En Vivo</h3>
                 <div class="table-responsive">
                     <table>
                         <thead>
-                            <tr><th>Pos</th><th>Nombre</th><th>Puntos</th></tr>
+                            <tr><th style="width: 50px;">Pos</th><th>Nombre</th><th style="text-align:right; width:70px;">Puntos</th></tr>
                         </thead>
                         <tbody id="tabla-ranking"></tbody>
                     </table>
@@ -488,6 +426,9 @@
             </div>
         </div>
     </div>
+
+    <div class="nav-mobile-bar" id="bottom-app-bar">
+        </div>
 
 </div>
 
@@ -515,11 +456,40 @@
 
     let rolActual = 'visor';
     let usuarioLogueado = null;
-    let PIN_ADMIN = "9999"; // Cambia este número por tu PIN secreto de Administrador
+    let PIN_ADMIN = "9999"; 
 
     let faseFiltroConfig = '16avos';
     let faseFiltroReal = '16avos';
+    let initialLoadComplete = false;
 
+    // SISTEMA TOAST PERSONALIZADO
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 3000);
+    }
+
+    // MODAL PERSONALIZADO REEMPLAZO DE CONFIRM
+    let currentConfirmCallback = null;
+    function showCustomModal(title, text, confirmCallback) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-text').innerText = text;
+        currentConfirmCallback = confirmCallback;
+        document.getElementById('custom-modal').style.display = 'flex';
+    }
+    function closeCustomModal() {
+        document.getElementById('custom-modal').style.display = 'none';
+        currentConfirmCallback = null;
+    }
+    document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+        if(currentConfirmCallback) currentConfirmCallback();
+        closeCustomModal();
+    });
+
+    // ESCUCHADOR DE BASE DE DATOS
     db.ref().on('value', (snapshot) => {
         const data = snapshot.val() || {};
         partidos = data.partidos || [];
@@ -535,19 +505,29 @@
         renderRanking();
         cargarSelectoresPredicciones();
         actualizarSelectorVisor();
+        if(rolActual === 'usuario') pintarEstadisticasPersonales();
+
+        // CONTROL PANTALLA DE CARGA
+        if (!initialLoadComplete) {
+            initialLoadComplete = true;
+            const loader = document.getElementById('loading-screen');
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
+        }
     });
 
     function verificarPIN() {
         const pinIngresado = document.getElementById('input-pin').value.trim();
+        if(pinIngresado === "") {
+            showToast("Introduce un PIN válido o usa el botón de Visor.", "danger");
+            return;
+        }
         
         if (pinIngresado === PIN_ADMIN) {
             rolActual = 'admin';
             document.getElementById('txt-bienvenida').innerText = "👑 MODO ADMINISTRADOR";
             configurarInterfazPorRol();
-        } else if (pinIngresado === "") {
-            rolActual = 'visor';
-            document.getElementById('txt-bienvenida').innerText = "👀 MODO VISOR GENERAL";
-            configurarInterfazPorRol();
+            showToast("Autenticado como Administrador.");
         } else {
             const encontrado = participantes.find(p => p.pin === pinIngresado);
             if (encontrado) {
@@ -555,24 +535,32 @@
                 usuarioLogueado = encontrado;
                 document.getElementById('txt-bienvenida').innerText = `⚽ ¡Hola, ${encontrado.nombre}!`;
                 configurarInterfazPorRol();
+                pintarEstadisticasPersonales();
+                showToast(`¡Bienvenido, ${encontrado.nombre}!`);
             } else {
-                alert("PIN incorrecto. Intenta de nuevo.");
+                showToast("PIN incorrecto. Intenta de nuevo.", "danger");
             }
         }
+    }
+
+    function entrarComoVisor() {
+        rolActual = 'visor';
+        usuarioLogueado = null;
+        document.getElementById('txt-bienvenida').innerText = "👀 MODO VISOR GENERAL";
+        configurarInterfazPorRol();
+        showToast("Entraste en Modo Visor.");
     }
 
     function configurarInterfazPorRol() {
         document.getElementById('panel-login').style.display = 'none';
         document.getElementById('contenido-sistema').style.display = 'block';
-        document.getElementById('btn-cerrar-sesion').style.display = 'block';
-
-        document.getElementById('tab-adm-partidos').style.display = (rolActual === 'admin') ? 'block' : 'none';
-        document.getElementById('tab-adm-participantes').style.display = (rolActual === 'admin') ? 'block' : 'none';
-        document.getElementById('tab-usr-predicciones').style.display = (rolActual === 'admin' || rolActual === 'usuario') ? 'block' : 'none';
         
-        document.getElementById('tab-vis-predicciones').style.display = 'block';
-        document.getElementById('btn-guardar-reales').style.display = (rolActual === 'admin') ? 'block' : 'none';
+        // Mostrar / Ocultar Tarjetas Estadísticas según el rol
+        document.getElementById('wrapper-stats-personales').style.display = (rolActual === 'usuario') ? 'grid' : 'none';
         document.getElementById('div-select-usuario-admin').style.display = (rolActual === 'admin') ? 'block' : 'none';
+        document.getElementById('btn-guardar-reales').style.display = (rolActual === 'admin') ? 'block' : 'none';
+
+        rebuildBottomAppBar();
 
         if (rolActual === 'admin' || rolActual === 'visor') {
             switchTab('tab-ranking');
@@ -587,66 +575,93 @@
         document.getElementById('input-pin').value = '';
         document.getElementById('panel-login').style.display = 'block';
         document.getElementById('contenido-sistema').style.display = 'none';
-        document.getElementById('btn-cerrar-sesion').style.display = 'none';
+        showToast("Sesión cerrada.");
+    }
+
+    // RENDERIZADO DINÁMICO DE PESTAÑAS MÓVILES EXCLUSIVAS POR ROL
+    function rebuildBottomAppBar() {
+        const bar = document.getElementById('bottom-app-bar');
+        bar.innerHTML = '';
+
+        if(rolActual === 'admin') {
+            bar.innerHTML += `<button class="nav-item-btn" id="m-partidos" onclick="switchTab('tab-partidos')"><span class="nav-icon">⚙️</span><span>Partidos</span></button>`;
+            bar.innerHTML += `<button class="nav-item-btn" id="m-participantes" onclick="switchTab('tab-participantes')"><span class="nav-icon">👥</span><span>Jugadores</span></button>`;
+        }
+        if(rolActual === 'admin' || rolActual === 'usuario') {
+            bar.innerHTML += `<button class="nav-item-btn" id="m-predicciones" onclick="switchTab('tab-predicciones')"><span class="nav-icon">✍️</span><span>Predicciones</span></button>`;
+        }
+        
+        bar.innerHTML += `<button class="nav-item-btn" id="m-visor" onclick="switchTab('tab-visor-predicciones')"><span class="nav-icon">🔍</span><span>Espiar</span></button>`;
+        bar.innerHTML += `<button class="nav-item-btn" id="m-ranking" onclick="switchTab('tab-ranking')"><span class="nav-icon">📊</span><span>Ranking</span></button>`;
+        bar.innerHTML += `<button class="nav-item-btn" onclick="showCustomModal('Cerrar Sesión', '¿Estás seguro de que quieres salir al login principal?', cerrarSesion)"><span class="nav-icon">🚪</span><span>Salir</span></button>`;
     }
 
     function switchTab(tabId) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(tabId).classList.add('active');
-        const btnActivo = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
-        if(btnActivo) btnActivo.classList.add('active');
 
-        if(tabId === 'tab-predicciones') { cargarFormularioPredicciones(); }
-        if(tabId === 'tab-visor-predicciones') { cargarVistaEspiar(); }
+        // Sincronizar estado activo de la barra móvil
+        if(tabId === 'tab-partidos') document.getElementById('m-partidos')?.classList.add('active');
+        if(tabId === 'tab-participantes') document.getElementById('m-participantes')?.classList.add('active');
+        if(tabId === 'tab-predicciones') { document.getElementById('m-predicciones')?.classList.add('active'); cargarFormularioPredicciones(); }
+        if(tabId === 'tab-visor-predicciones') { document.getElementById('m-visor')?.classList.add('active'); cargarVistaEspiar(); }
+        if(tabId === 'tab-ranking') { document.getElementById('m-ranking')?.classList.add('active'); renderRanking(); renderPartidosReales(); }
     }
 
     function renderControlFases() {
         const tbody = document.getElementById('tabla-control-fases');
-        if(!tbody) return;
-        tbody.innerHTML = '';
+        if(!tbody) return; tbody.innerHTML = '';
         Object.keys(estadosFases).forEach(fase => {
             const act = estadosFases[fase];
             tbody.innerHTML += `
                 <tr>
                     <td><b>${fase}</b></td>
                     <td><span class="status-badge ${act ? 'badge-success' : 'badge-danger'}">${act ? 'Abierta' : 'Bloqueada'}</span></td>
-                    <td><button class="btn" style="padding:5px 10px; font-size:12px; width:auto; box-shadow:none;" onclick="cambiarEstadoFase('${fase}', ${!act})">${act ? 'Bloquear' : 'Abrir'}</button></td>
+                    <td><button class="btn" style="padding:5px 10px; font-size:11px; width:auto; box-shadow:none;" onclick="cambiarEstadoFase('${fase}', ${!act})">${act ? 'Bloquear' : 'Abrir'}</button></td>
                 </tr>`;
         });
     }
 
     function cambiarEstadoFase(fase, nuevoEstado) {
         estadosFases[fase] = nuevoEstado;
-        db.ref('estadosFases').set(estadosFases);
+        db.ref('estadosFases').set(estadosFases, () => { showToast(`Fase ${fase} actualizada.`); });
     }
 
     function guardarPartido() {
         const fase = document.getElementById('partido-fase').value;
         const local = document.getElementById('equipo-local').value.trim();
         const visitante = document.getElementById('equipo-visitante').value.trim();
-        if(!local || !visitante) return alert("Completa los nombres de los equipos.");
+        if(!local || !visitante) return showToast("Completa los nombres de los equipos.", "danger");
 
         const nuevo = { id: 'P_' + Date.now(), fase, local, visitante, golesLocal: null, golesVisitante: null };
         partidos.push(nuevo);
-        db.ref('partidos').set(partidos);
-        document.getElementById('equipo-local').value = '';
-        document.getElementById('equipo-visitante').value = '';
+        db.ref('partidos').set(partidos, () => {
+            showToast("Partido agregado con éxito.");
+            document.getElementById('equipo-local').value = '';
+            document.getElementById('equipo-visitante').value = '';
+        });
     }
 
     function renderPartidosConfig() {
         const contenedor = document.getElementById('lista-partidos-config');
-        if(!contenedor) return;
-        contenedor.innerHTML = '';
+        if(!contenedor) return; contenedor.innerHTML = '';
         const filtrados = partidos.filter(p => p.fase === faseFiltroConfig);
-        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos creados.</p>'; return; }
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">No hay partidos creados.</p>'; return; }
         filtrados.forEach(p => {
             contenedor.innerHTML += `
                 <div class="partido-card" style="flex-direction:row; justify-content:space-between; text-align:left;">
-                    <span><b>${p.local}</b> vs <b>${p.visitante}</b></span>
-                    <button class="eliminar-btn" onclick="eliminarPartido('${p.id}')">❌</button>
+                    <span style="font-size:0.9rem;"><b>${p.local}</b> vs <b>${p.visitante}</b></span>
+                    <button class="eliminar-btn" onclick="prepararEliminarPartido('${p.id}')">❌</button>
                 </div>`;
+        });
+    }
+
+    function prepararEliminarPartido(id) {
+        showCustomModal("Eliminar Partido", "¿Estás completamente seguro de eliminar este encuentro?", () => {
+            partidos = partidos.filter(p => p.id !== id);
+            db.ref('partidos').set(partidos, () => { showToast("Partido eliminado."); });
         });
     }
 
@@ -657,49 +672,44 @@
         renderPartidosConfig();
     }
 
-    function eliminarPartido(id) {
-        if(confirm("¿Seguro que quieres borrar este partido?")) {
-            partidos = partidos.filter(p => p.id !== id);
-            db.ref('partidos').set(partidos);
-        }
-    }
-
     function guardarParticipante() {
         const nombre = document.getElementById('part-nombre').value.trim();
         const correo = document.getElementById('part-correo').value.trim();
-        if(!nombre || !correo) return alert("Completa todos los campos.");
-        if(participantes.some(p => p.correo === correo)) return alert("Este teléfono/celular ya está registrado.");
+        if(!nombre || !correo) return showToast("Completa todos los campos.", "danger");
+        if(participantes.some(p => p.correo === correo)) return showToast("Este teléfono/celular ya existe.", "danger");
 
         const pinAleatorio = Math.floor(1000 + Math.random() * 9000).toString();
         participantes.push({ nombre, correo, pin: pinAleatorio });
-        db.ref('participantes').set(participantes);
-        document.getElementById('part-nombre').value = '';
-        document.getElementById('part-correo').value = '';
+        db.ref('participantes').set(participantes, () => {
+            showToast("Jugador registrado perfectamente.");
+            document.getElementById('part-nombre').value = '';
+            document.getElementById('part-correo').value = '';
+        });
     }
 
     function renderParticipantes() {
         const tbody = document.getElementById('tabla-participantes');
-        if(!tbody) return;
-        tbody.innerHTML = '';
+        if(!tbody) return; tbody.innerHTML = '';
         participantes.forEach(p => {
-            tbody.innerHTML += `<tr><td>${p.nombre}</td><td>${p.correo}</td><td><strong style="color:var(--success); font-size:16px;">${p.pin}</strong></td><td><button class="eliminar-btn" style="padding:4px 8px; font-size:12px;" onclick="eliminarParticipante('${p.correo}')">🗑️</button></td></tr>`;
+            tbody.innerHTML += `<tr><td>${p.nombre}</td><td>${p.correo}</td><td><strong style="color:var(--success); font-size:15px;">${p.pin}</strong></td><td><button class="eliminar-btn" style="padding:4px 8px; font-size:12px;" onclick="prepararEliminarParticipante('${p.correo}')">🗑️</button></td></tr>`;
         });
     }
 
-    function eliminarParticipante(correo) {
-        if(confirm("¿Seguro que quieres eliminar a este participante?")) {
+    function prepararEliminarParticipante(correo) {
+        showCustomModal("Eliminar Jugador", "Esto removerá permanentemente al participante y todas sus predicciones cargadas.", () => {
             participantes = participantes.filter(p => p.correo !== correo);
-            db.ref('participantes').set(participantes);
-            const nodo = correo.replace(/\./g, '_');
-            db.ref('predicciones/' + nodo).remove();
-            db.ref('bloqueosUsuarios/' + nodo).remove();
-        }
+            db.ref('participantes').set(participantes, () => {
+                const nodo = correo.replace(/\./g, '_');
+                db.ref('predicciones/' + nodo).remove();
+                db.ref('bloqueosUsuarios/' + nodo).remove();
+                showToast("Participante purgado del sistema.");
+            });
+        });
     }
 
     function cargarSelectoresPredicciones() {
         const selectAdmin = document.getElementById('select-participante-admin');
-        if(!selectAdmin) return;
-        const elegidoAntes = selectAdmin.value;
+        if(!selectAdmin) return; const elegidoAntes = selectAdmin.value;
         selectAdmin.innerHTML = '';
         participantes.forEach(p => { selectAdmin.innerHTML += `<option value="${p.correo}">${p.nombre}</option>`; });
         if(elegidoAntes) selectAdmin.value = elegidoAntes;
@@ -707,13 +717,9 @@
 
     function actualizarSelectorVisor() {
         const selectVisor = document.getElementById('select-visor-usuario');
-        if(!selectVisor) return;
-        const elegidoAntes = selectVisor.value;
+        if(!selectVisor) return; const elegidoAntes = selectVisor.value;
         selectVisor.innerHTML = '';
-        if(participantes.length === 0) {
-            selectVisor.innerHTML = '<option value="">No hay jugadores</option>';
-            return;
-        }
+        if(participantes.length === 0) { selectVisor.innerHTML = '<option value="">No hay jugadores</option>'; return; }
         participantes.forEach(p => { selectVisor.innerHTML += `<option value="${p.correo}">${p.nombre}</option>`; });
         if(elegidoAntes) selectVisor.value = elegidoAntes;
     }
@@ -725,21 +731,25 @@
         const btnGuardar = document.getElementById('btn-guardar-preds');
         const alertGeneralCerrada = document.getElementById('status-fase-bloqueada');
         const alertUsuarioBloqueado = document.getElementById('alert-ya-bloqueado');
+        const avisoNoEmpates = document.getElementById('aviso-fase-eliminatoria');
 
         if(!correoDestino) { contenedor.innerHTML = '<p style="color:var(--text-muted);">Selecciona un participante.</p>'; btnGuardar.style.display = 'none'; return; }
 
         const nodoUsuario = correoDestino.replace(/\./g, '_');
         const usuarioEstaBloqueadoEnEstaFase = bloqueosUsuarios[nodoUsuario]?.[fase] || false;
         const faseAbiertaGeneral = estadosFases[fase];
-
         const puedeEditar = (rolActual === 'admin') || (rolActual === 'usuario' && faseAbiertaGeneral && !usuarioEstaBloqueadoEnEstaFase);
 
         alertGeneralCerrada.style.display = (!faseAbiertaGeneral && rolActual === 'usuario') ? 'block' : 'none';
         alertUsuarioBloqueado.style.display = (usuarioEstaBloqueadoEnEstaFase && rolActual === 'usuario') ? 'block' : 'none';
         btnGuardar.style.display = puedeEditar ? 'block' : 'none';
+        
+        // Mostrar aviso de no empates en rondas eliminatorias (8vos, 4tos, semi, final)
+        const esFaseEliminatoria = ['8vos', '4tos', 'semi', 'final'].includes(fase);
+        avisoNoEmpates.style.display = esFaseEliminatoria ? 'block' : 'none';
 
         const filtrados = partidos.filter(p => p.fase === fase);
-        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos configurados.</p>'; btnGuardar.style.display = 'none'; return; }
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos configurados en esta fase.</p>'; btnGuardar.style.display = 'none'; return; }
 
         contenedor.innerHTML = '';
         const misPreds = predicciones[nodoUsuario] || {};
@@ -749,15 +759,76 @@
             const inputStatus = puedeEditar ? '' : 'disabled';
 
             contenedor.innerHTML += `
-                <div class="partido-card item-prediccion" data-id="${p.id}">
+                <div class="partido-card item-prediccion" data-id="${p.id}" data-local-name="${p.local}" data-visitante-name="${p.visitante}">
                     <span class="equipo-texto derecha"><b>${p.local}</b></span>
                     <div class="marcador-inputs">
                         <input type="number" class="pred-l" value="${dataP.local !== undefined ? dataP.local : ''}" min="0" ${inputStatus}> 
-                        <span style="color:var(--text-muted);">vs</span> 
+                        <span style="color:var(--text-muted); font-weight:bold;">VS</span> 
                         <input type="number" class="pred-v" value="${dataP.visitante !== undefined ? dataP.visitante : ''}" min="0" ${inputStatus}>
                     </div>
                     <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
                 </div>`;
+        });
+    }
+
+    // LÓGICA DE VALIDACIÓN ANTES DE ENVIAR PREDICCIONES (EVITA EMPATES)
+    function prepararGuardadoPredicciones() {
+        const fase = document.getElementById('select-fase-pred').value;
+        const esFaseEliminatoria = ['8vos', '4tos', 'semi', 'final'].includes(fase);
+        const cards = document.querySelectorAll('#formulario-predicciones .item-prediccion');
+        
+        let erroresEmpate = [];
+        let actualizaciones = {};
+
+        cards.forEach(card => {
+            const idPartido = card.getAttribute('data-id');
+            const localName = card.getAttribute('data-local-name');
+            const visitanteName = card.getAttribute('data-visitante-name');
+            const golL = card.querySelector('.pred-l').value;
+            const golV = card.querySelector('.pred-v').value;
+
+            if(golL !== '' && golV !== '') {
+                const gL = parseInt(golL);
+                const gV = parseInt(golV);
+
+                // Validación crítica de empates
+                if(esFaseEliminatoria && gL === gV) {
+                    erroresEmpate.push(`${localName} vs ${visitanteName}`);
+                }
+                actualizaciones[idPartido] = { local: gL, visitante: gV };
+            }
+        });
+
+        if(erroresEmpate.length > 0) {
+            showToast(`Error: En ronda eliminatoria debe haber un ganador. Corrige empates en: ${erroresEmpate.join(', ')}`, "danger");
+            return; 
+        }
+
+        if(rolActual === 'usuario') {
+            showCustomModal("⚠️ ¿CONGELAR PREDICCIONES?", "Al continuar, tus predicciones de esta fase quedarán bloqueadas de forma permanente.", () => {
+                ejecutarGuardadoPredicciones(actualizaciones, fase);
+            });
+        } else {
+            ejecutarGuardadoPredicciones(actualizaciones, fase);
+        }
+    }
+
+    function ejecutarGuardadoPredicciones(actualizaciones, fase) {
+        let correoDestino = (rolActual === 'admin') ? document.getElementById('select-participante-admin').value : usuarioLogueado.correo;
+        const nodoUsuario = correoDestino.replace(/\./g, '_');
+
+        db.ref('predicciones/' + nodoUsuario).update(actualizaciones, (err) => {
+            if(!err) {
+                if(rolActual === 'usuario') {
+                    db.ref('bloqueosUsuarios/' + nodoUsuario + '/' + fase).set(true, () => {
+                        showToast("¡Predicciones guardadas y congeladas con éxito!");
+                        cargarFormularioPredicciones();
+                        pintarEstadisticasPersonales();
+                    });
+                } else {
+                    showToast("Predicciones del usuario actualizadas por Admin.");
+                }
+            }
         });
     }
 
@@ -766,10 +837,10 @@
         const fase = document.getElementById('select-visor-fase').value;
         const contenedor = document.getElementById('formulario-visor-espiar');
 
-        if(!correoDestino) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay jugadores seleccionados.</p>'; return; }
+        if(!correoDestino) { contenedor.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">No hay jugadores seleccionados.</p>'; return; }
 
         const filtrados = partidos.filter(p => p.fase === fase);
-        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos en esta fase.</p>'; return; }
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">No hay partidos en esta fase.</p>'; return; }
 
         contenedor.innerHTML = '';
         const nodoUsuario = correoDestino.replace(/\./g, '_');
@@ -784,49 +855,12 @@
                 <div class="partido-card">
                     <span class="equipo-texto derecha"><b>${p.local}</b></span>
                     <div class="marcador-inputs">
-                        <input type="text" value="${gl}" style="background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled> 
-                        <span style="margin:0 5px; color:var(--text-muted);">vs</span> 
-                        <input type="text" value="${gv}" style="background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled>
+                        <input type="text" value="${gl}" style="width:58px; height:48px; text-align:center; font-size:1.4rem; background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled> 
+                        <span style="margin:0 5px; color:var(--text-muted); font-weight:bold;">VS</span> 
+                        <input type="text" value="${gv}" style="width:58px; height:48px; text-align:center; font-size:1.4rem; background:#0f111a; border-color:var(--border-color); color:var(--text-muted);" disabled>
                     </div>
                     <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
                 </div>`;
-        });
-    }
-
-    function guardarPredicciones() {
-        let correoDestino = (rolActual === 'admin') ? document.getElementById('select-participante-admin').value : usuarioLogueado.correo;
-        const fase = document.getElementById('select-fase-pred').value;
-        if(!correoDestino) return;
-
-        if(rolActual === 'usuario') {
-            const confirmacion = confirm("⚠️ ¿CONGELAR PREDICCIONES?\n\nAl continuar, se bloquearán para esta fase de forma permanente.");
-            if(!confirmacion) return;
-        }
-
-        const nodoUsuario = correoDestino.replace(/\./g, '_');
-        const cards = document.querySelectorAll('#formulario-predicciones .item-prediccion');
-        let actualizaciones = {};
-
-        cards.forEach(card => {
-            const idPartido = card.getAttribute('data-id');
-            const golL = card.querySelector('.pred-l').value;
-            const golV = card.querySelector('.pred-v').value;
-            if(golL !== '' && golV !== '') {
-                actualizaciones[idPartido] = { local: parseInt(golL), visitante: parseInt(golV) };
-            }
-        });
-
-        db.ref('predicciones/' + nodoUsuario).update(actualizaciones, (err) => {
-            if(!err) {
-                if(rolActual === 'usuario') {
-                    db.ref('bloqueosUsuarios/' + nodoUsuario + '/' + fase).set(true, () => {
-                        alert("🔒 ¡Predicciones enviadas y bloqueadas de forma segura!");
-                        cargarFormularioPredicciones();
-                    });
-                } else {
-                    alert("Predicciones actualizadas por el Administrador.");
-                }
-            }
         });
     }
 
@@ -839,10 +873,14 @@
 
     function renderPartidosReales() {
         const contenedor = document.getElementById('lista-partidos-reales');
-        if(!contenedor) return;
-        contenedor.innerHTML = '';
+        if(!contenedor) return; contenedor.innerHTML = '';
         const filtrados = partidos.filter(p => p.fase === faseFiltroReal);
-        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted);">No hay partidos reales.</p>'; return; }
+        
+        const avisoReal = document.getElementById('aviso-fase-eliminatoria-real');
+        const esFaseEliminatoria = ['8vos', '4tos', 'semi', 'final'].includes(faseFiltroReal);
+        avisoReal.style.display = esFaseEliminatoria ? 'block' : 'none';
+
+        if(filtrados.length === 0) { contenedor.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">No hay partidos reales en esta fase.</p>'; return; }
 
         filtrados.forEach(p => {
             const gl = p.golesLocal !== null ? p.golesLocal : '';
@@ -850,11 +888,11 @@
             const inputsDeshabilitados = (rolActual === 'admin') ? '' : 'disabled';
 
             contenedor.innerHTML += `
-                <div class="partido-card real-card" data-id="${p.id}">
+                <div class="partido-card real-card" data-id="${p.id}" data-local-name="${p.local}" data-visitante-name="${p.visitante}">
                     <span class="equipo-texto derecha"><b>${p.local}</b></span>
                     <div class="marcador-inputs">
                         <input type="number" class="real-l" value="${gl}" min="0" ${inputsDeshabilitados}> 
-                        <span style="color:var(--text-muted);">vs</span> 
+                        <span style="color:var(--text-muted); font-weight:bold;">VS</span> 
                         <input type="number" class="real-v" value="${gv}" min="0" ${inputsDeshabilitados}>
                     </div>
                     <span class="equipo-texto izquierda"><b>${p.visitante}</b></span>
@@ -862,25 +900,45 @@
         });
     }
 
-    function guardarResultadosReales() {
+    // VALIDACIÓN DE EMPATES EN ADMIN (RESULTADOS REALES)
+    function prepararGuardadoReales() {
+        const esFaseEliminatoria = ['8vos', '4tos', 'semi', 'final'].includes(faseFiltroReal);
         const cards = document.querySelectorAll('#lista-partidos-reales .real-card');
+        let erroresEmpateAdmin = [];
+        let copiaPartidosLocal = JSON.parse(JSON.stringify(partidos));
+
         cards.forEach(card => {
             const idPartido = card.getAttribute('data-id');
+            const localName = card.getAttribute('data-local-name');
+            const visitanteName = card.getAttribute('data-visitante-name');
             const golL = card.querySelector('.real-l').value;
             const golV = card.querySelector('.real-v').value;
 
-            const idx = partidos.findIndex(p => p.id === idPartido);
+            const idx = copiaPartidosLocal.findIndex(p => p.id === idPartido);
             if(idx !== -1) {
                 if(golL !== '' && golV !== '') {
-                    partidos[idx].golesLocal = parseInt(golL);
-                    partidos[idx].golesVisitante = parseInt(golV);
+                    const gL = parseInt(golL);
+                    const gV = parseInt(golV);
+
+                    if(esFaseEliminatoria && gL === gV) {
+                        erroresEmpateAdmin.push(`${localName} vs ${visitanteName}`);
+                    }
+                    copiaPartidosLocal[idx].golesLocal = gL;
+                    copiaPartidosLocal[idx].golesVisitante = gV;
                 } else {
-                    partidos[idx].golesLocal = null;
-                    partidos[idx].golesVisitante = null;
+                    copiaPartidosLocal[idx].golesLocal = null;
+                    copiaPartidosLocal[idx].golesVisitante = null;
                 }
             }
         });
-        db.ref('partidos').set(partidos, () => { alert("Resultados guardados de forma segura."); });
+
+        if(erroresEmpateAdmin.length > 0) {
+            showToast(`Error Admin: No se permiten empates en fases definitivas: ${erroresEmpateAdmin.join(', ')}`, "danger");
+            return;
+        }
+
+        partidos = copiaPartidosLocal;
+        db.ref('partidos').set(partidos, () => { showToast("Resultados oficiales e históricos calculados."); });
     }
 
     function calcularPuntosUsuario(correo) {
@@ -907,23 +965,105 @@
         return puntosTotales;
     }
 
+    // CALCULO COMPLEMENTARIO PARA TARJETAS DE MÉTRICAS PERSONALES
+    function calcularEstadisticasDetalladas(correo) {
+        const nodoUsuario = correo.replace(/\./g, '_');
+        const usuarioPreds = predicciones[nodoUsuario] || {};
+        let exactas = 0;
+        let partidosConPrediccionContados = 0;
+        let aciertosCualquierTipo = 0;
+
+        partidos.forEach(p => {
+            if(p.golesLocal !== null && p.golesVisitante !== null) {
+                const pred = usuarioPreds[p.id];
+                if(pred !== undefined && pred !== null) {
+                    partidosConPrediccionContados++;
+                    let ganadorReal = p.golesLocal > p.golesVisitante ? 1 : (p.golesLocal < p.golesVisitante ? 2 : 0);
+                    let ganadorPred = pred.local > pred.visitante ? 1 : (pred.local < pred.visitante ? 2 : 0);
+
+                    if(ganadorReal === ganadorPred || (p.golesLocal === pred.local && p.golesVisitante === pred.visitante)) {
+                        aciertosCualquierTipo++;
+                    }
+                    if(p.golesLocal === pred.local && p.golesVisitante === pred.visitante) {
+                        exactas++;
+                    }
+                }
+            }
+        });
+
+        let porcentaje = 0;
+        if(partidosConPrediccionContados > 0) {
+            porcentaje = Math.round((aciertosCualquierTipo / partidosConPrediccionContados) * 100);
+        }
+
+        return { exactas, porcentaje };
+    }
+
+    function pintarEstadisticasPersonales() {
+        if(!usuarioLogueado) return;
+        const pts = calcularPuntosUsuario(usuarioLogueado.correo);
+        const { exactas, porcentaje } = calcularEstadisticasDetalladas(usuarioLogueado.correo);
+
+        document.getElementById('stat-pts').innerText = pts;
+        document.getElementById('stat-exactas').innerText = exactas;
+        document.getElementById('stat-porcentaje').innerText = porcentaje + "%";
+    }
+
+    // COMPONENTE: RANKING MEJORADO CON MEDALLAS REALES Y BARRAS DE PROGRESO PROPORCIONALES
     function renderRanking() {
         const tbody = document.getElementById('tabla-ranking');
-        if(!tbody) return;
-        tbody.innerHTML = '';
-        let ranking = participantes.map(p => { return { nombre: p.nombre, puntos: calcularPuntosUsuario(p.correo) }; });
+        if(!tbody) return; tbody.innerHTML = '';
+        
+        let ranking = participantes.map(p => { 
+            return { nombre: p.nombre, correo: p.correo, puntos: calcularPuntosUsuario(p.correo) }; 
+        });
+        
         ranking.sort((a, b) => b.puntos - a.puntos);
 
         if(ranking.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No hay participantes en juego.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No hay participantes registrados en el ecosistema.</td></tr>';
             return;
         }
-        ranking.forEach((p, index) => {
-            let colorMedalla = 'var(--text-main)';
-            if(index === 0) colorMedalla = '#ffd700'; // Oro
-            if(index === 1) colorMedalla = '#c0c0c0'; // Plata
-            if(index === 2) colorMedalla = '#cd7f32'; // Bronce
-            tbody.innerHTML += `<tr><td><b style="color:${colorMedalla}">#${index + 1}</b></td><td>${p.nombre}</td><td><strong style="color:var(--success);">${p.puntos} pts</strong></td></tr>`;
+
+        const maxPuntos = ranking[0].puntos;
+
+        ranking.forEach((jugador, index) => {
+            const posicion = index + 1;
+            let visualPosicion = `#${posicion}`;
+            
+            // Reemplazo de medallas reales en el podio
+            if(posicion === 1) visualPosicion = '<span style="font-size:1.3rem;">🥇</span>';
+            else if(posicion === 2) visualPosicion = '<span style="font-size:1.3rem;">🥈</span>';
+            else if(posicion === 3) visualPosicion = '<span style="font-size:1.3rem;">🥉</span>';
+
+            // Cálculo proporcional de la barra de progreso horizontal respecto al líder
+            let porcentajeBarra = 0;
+            if(maxPuntos > 0) {
+                porcentajeBarra = Math.round((jugador.puntos / maxPuntos) * 100);
+            }
+
+            let claseEspecial = '';
+            let esTuFila = false;
+            if (rolActual === 'usuario' && usuarioLogueado && usuarioLogueado.correo === jugador.correo) {
+                claseEspecial = 'class="fila-usuario-actual"';
+                esTuFila = true;
+            }
+
+            tbody.innerHTML += `
+                <tr ${claseEspecial}>
+                    <td style="vertical-align: middle; font-weight:bold; text-align:center;">${visualPosicion}</td>
+                    <td>
+                        <div class="player-cell">
+                            <span style="font-weight: 500;">
+                                ${jugador.nombre} ${esTuFila ? ' <small style="color:var(--primary); font-weight:bold; margin-left:4px;">(Tú)</small>' : ''}
+                            </span>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: ${porcentajeBarra}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:right; vertical-align: middle;"><strong style="color:var(--success); font-size:0.95rem;">${jugador.puntos} pts</strong></td>
+                </tr>`;
         });
     }
 </script>
