@@ -336,7 +336,7 @@
     let participantes = [];
     let predicciones = {};
     let estadosFases = { "16avos": true, "8vos": false, "4tos": false, "semi": false, "final": false };
-    let bloqueoUsuarios = {}; // Ajustado para hacer match con snapshot
+    let bloqueoUsuarios = {}; 
 
     let rolActual = 'visor';
     let usuarioLogueado = null;
@@ -345,8 +345,6 @@
     let faseFiltroConfig = '16avos';
     let faseFiltroReal = '16avos';
     let initialLoadComplete = false;
-
-    // VARIABLE NUEVA PARA CONTROLAR LA EDICIÓN
     let idPartidoEditando = null; 
 
     function showToast(message, type = 'success') {
@@ -409,7 +407,7 @@
             rolActual = 'admin';
             document.getElementById('txt-bienvenida').innerText = "👑 MODO ADMINISTRADOR";
             configurarInterfazPorRol();
-            showToast("Autenticado como Administrador.");
+            showToast("Autenticado como Administrator.");
         } else {
             const encontrado = participantes.find(p => p.pin === pinIngresado);
             if (encontrado) {
@@ -441,7 +439,6 @@
         document.getElementById('btn-guardar-reales').style.display = (rolActual === 'admin') ? 'block' : 'none';
         rebuildBottomAppBar();
         
-        // Cargar los selectores de fases dinámicamente según el orden correcto
         const fasesLista = ["16avos", "8vos", "4tos", "semi", "final"];
         const selectPred = document.getElementById('select-fase-pred');
         if(selectPred) {
@@ -506,7 +503,6 @@
         db.ref('estadosFases').set(estadosFases, () => { showToast(`Fase ${fase} actualizada.`); });
     }
 
-    // FUNCIÓN DE GUARDAR / ACTUALIZAR PARTIDO MODIFICADA
     function guardarPartido() {
         const fase = document.getElementById('partido-fase').value;
         const local = document.getElementById('equipo-local').value.trim();
@@ -517,7 +513,6 @@
         if(!local || !visitante) return showToast("Completa los nombres de los equipos.", "danger");
         
         if (idPartidoEditando !== null) {
-            // MODO EDICIÓN: Buscamos el partido y sobrescribimos sus valores de texto sin romper IDs
             const idx = partidos.findIndex(p => p.id === idPartidoEditando);
             if(idx !== -1) {
                 partidos[idx].fase = fase;
@@ -529,7 +524,6 @@
             idPartidoEditando = null; 
             showToast("Partido modificado exitosamente.");
         } else {
-            // MODO NUEVO: Creación estándar de partido
             const nuevo = { 
                 id: 'P_' + Date.now(), 
                 fase, 
@@ -549,7 +543,6 @@
         });
     }
 
-    // FUNCIÓN PARA SOLICITAR EDICIÓN EN PANEL SUPERIOR
     function iniciarEditarPartido(id) {
         const partido = partidos.find(p => p.id === id);
         if(!partido) return;
@@ -594,7 +587,6 @@
         if(btnCancel) btnCancel.remove();
     }
 
-    // RENDER DE PARTIDOS CON BOTÓN DE EDITAR AÑADIDO (✏️)
     function renderPartidosConfig() {
         const contenedor = document.getElementById('lista-partidos-config');
         if(!contenedor) return; contenedor.innerHTML = '';
@@ -706,7 +698,8 @@
 
         filtrados.forEach(p => {
             const dataP = misPreds[p.id] || { local: '', visitante: '' };
-            const inputStatus = puedeEditar ? '' : 'disabled';
+            // CORRECCIÓN CLAVE: Inyectar disabled="true" en vez de la palabra "disabled" simple
+            const inputStatus = puedeEditar ? '' : 'disabled="true"';
             const bL = p.banderaLocal || "🏳️";
             const bV = p.banderaVisitante || "🏳️";
             
@@ -749,6 +742,21 @@
 
     function prepararGuardadoPredicciones() {
         const fase = document.getElementById('select-fase-pred').value;
+        
+        // CANDADO DE SEGURIDAD INTERNO ADICIONAL:
+        let correoDestino = (rolActual === 'admin') ? document.getElementById('select-participante-admin').value : usuarioLogueado?.correo;
+        if(!correoDestino) return;
+        const nodoUsuario = correoDestino.replace(/\./g, '_');
+        const usuarioEstaBloqueadoEnEstaFase = bloqueoUsuarios[nodoUsuario]?.[fase] || false;
+        const faseAbiertaGeneral = estadosFases[fase];
+
+        // Si es un usuario común y la fase está cerrada o él ya está bloqueado, romper la ejecución inmediatamente
+        if (rolActual === 'usuario' && (!faseAbiertaGeneral || usuarioEstaBloqueadoEnEstaFase)) {
+            showToast("Acción denegada: Esta fase está completamente inmutable.", "danger");
+            cargarFormularioPredicciones();
+            return;
+        }
+
         const cards = document.querySelectorAll('#formulario-predicciones .item-prediccion');
         let actualizaciones = {};
 
@@ -821,12 +829,12 @@
                     </div>
                     <div class="marcador-inputs">
                         <div class="input-container-gol">
-                            <input type="text" value="${gl}" style="color:var(--text-muted);" disabled>
+                            <input type="text" value="${gl}" style="color:var(--text-muted);" disabled="true">
                             <span class="lbl-micro-equipo">${p.local.substring(0,5)}</span>
                         </div>
                         <span class="vs-label">VS</span> 
                         <div class="input-container-gol">
-                            <input type="text" value="${gv}" style="color:var(--text-muted);" disabled>
+                            <input type="text" value="${gv}" style="color:var(--text-muted);" disabled="true">
                             <span class="lbl-micro-equipo">${p.visitante.substring(0,5)}</span>
                         </div>
                     </div>
@@ -854,7 +862,7 @@
         filtrados.forEach(p => {
             const gl = p.golesLocal !== null ? p.golesLocal : '';
             const gv = p.golesVisitante !== null ? p.golesVisitante : '';
-            const inputsDeshabilitados = (rolActual === 'admin') ? '' : 'disabled';
+            const inputsDeshabilitados = (rolActual === 'admin') ? '' : 'disabled="true"';
             const bL = p.banderaLocal || "🏳️";
             const bV = p.banderaVisitante || "🏳️";
             
