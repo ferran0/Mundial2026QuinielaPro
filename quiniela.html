@@ -21,13 +21,35 @@
             --border-color: #23283d;
             --warning: #ffb300;
         }
+        /* --- ESTILO DEL FONDO MUNDIALISTA CORREGIDO Y PREMIUM --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 10px 10px 90px 10px;
-            background-color: var(--bg-dark);
+            
+            /* 1. Color de seguridad (oscuro por si la imagen no carga) */
+            background-color: #0c101d; 
+
+            /* 2. LA IMAGEN DE FONDO (Reemplaza la URL entre comillas) */
+            /* Sugerencia: Busca en Google "Mundial 2026 Fondo Oscuro" o "Estadio Qatar Oscuro" */
+            background-image: url('https://grupovierci.brightspotcdn.com/dims4/default/f03ff1a/2147483647/strip/false/crop/1080x1350+0+0/resize/1080x1350!/quality/90/?url=https%3A%2F%2Fk2-prod-grupo-vierci.s3.us-east-1.amazonaws.com%2Fbrightspot%2F0d%2F6e%2F6566f0bc425fbdb5d73834611896%2Fmusica-del-mundial.png');
+
+            /* 3. El TRUCO DEL ADMIN: Capa oscura por encima para que el texto resalte */
+            /* Esto crea un filtro oscuro para que las tarjetas se lean perfecto */
+            background-blend-mode: overlay;
+            background-color: rgba(15, 17, 26, 0.88); /* 88% de oscuridad sobre la foto */
+
+            /* 4. Ajustes para que la foto se vea bien en celulares */
+            background-size: cover;          /* La foto cubre toda la pantalla sin deformarse */
+            background-position: center;     /* La foto siempre centrada */
+            background-attachment: fixed;    /* La foto se queda quieta al hacer scroll */
             color: var(--text-main);
         }
+
+
+
+
+
         .container { max-width: 500px; margin: 0 auto; }
         header { text-align: center; padding: 15px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
         h1 { margin: 0; font-size: 1.5rem; color: #fff; text-shadow: 0 0 10px var(--primary-glow); }

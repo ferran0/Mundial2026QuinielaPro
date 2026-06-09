@@ -48,16 +48,31 @@
             box-sizing: border-box;
         }
 
+               /* --- ESTILO DEL FONDO MUNDIALISTA CORREGIDO Y PREMIUM --- */
         body {
-            box-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px 15px;
-            background-color: var(--bg-dark);
-            background-image: var(--bg-gradient);
+            padding: 10px 10px 90px 10px;
+            
+            /* 1. Color de seguridad (oscuro por si la imagen no carga) */
+            background-color: #0c101d; 
+
+            /* 2. LA IMAGEN DE FONDO (Reemplaza la URL entre comillas) */
+            /* Sugerencia: Busca en Google "Mundial 2026 Fondo Oscuro" o "Estadio Qatar Oscuro" */
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAtYK33RX8DZHsqItoOjrSw0xr53T6VYRi4-A2IL_ez_F2rU4gLDLxDbOD&s=10');
+
+            /* 3. El TRUCO DEL ADMIN: Capa oscura por encima para que el texto resalte */
+            /* Esto crea un filtro oscuro para que las tarjetas se lean perfecto */
+            background-blend-mode: overlay;
+            background-color: rgba(15, 17, 26, 0.88); /* 88% de oscuridad sobre la foto */
+
+            /* 4. Ajustes para que la foto se vea bien en celulares */
+            background-size: cover;          /* La foto cubre toda la pantalla sin deformarse */
+            background-position: center;     /* La foto siempre centrada */
+            background-attachment: fixed;    /* La foto se queda quieta al hacer scroll */
             color: var(--text-main);
-            min-height: 100vh;
-            line-height: 1.6;
         }
+
 
         .container {
             max-width: 600px;
