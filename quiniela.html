@@ -1085,4 +1085,13 @@
     }
 </script>
 </body>
+<script>
+    setTimeout(() => {
+        const loader = docunment.getELementById('loading-screen');
+        if (loader) {
+            loader.style.display = 'none';
+            console.log("sistema desbloqueado para llenar tu quiniela.");
+        }
+    }, 3000);
+</script>
 </html>
